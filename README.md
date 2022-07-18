@@ -30,3 +30,5 @@ for building and running the application you need:
 
 * 패키지 구조를 어떻게 관리하는것이 좋을까?
   * [스프링 패키지 구조 가이드](https://cheese10yun.github.io/spring-guide-directory/)
+* Restful 하다는 것은 뭘까?
+  * [Restful 하다는 것은 뭘까?](https://dkyou.tistory.com/356)
