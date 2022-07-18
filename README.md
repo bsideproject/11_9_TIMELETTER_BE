@@ -32,3 +32,5 @@ for building and running the application you need:
   * [스프링 패키지 구조 가이드](https://cheese10yun.github.io/spring-guide-directory/)
 * Restful 하다는 것은 뭘까??
   * [Restful 하다는 것은 뭘까?](https://dkyou.tistory.com/356)
+* Spring Boot Controller 에서 매개변수 넘겨받는 방법
+  * [Controller 단에서 매개변수 넘겨받기](https://dkyou.tistory.com/357)
