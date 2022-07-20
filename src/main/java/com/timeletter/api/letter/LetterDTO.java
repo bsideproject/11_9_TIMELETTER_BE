@@ -25,4 +25,13 @@ public class LetterDTO {
         this.receivedDate = letter.getReceivedDate();
         this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
     }
+
+    public static Letter toEntity(final LetterDTO dto){
+        return Letter.builder()
+                .id(dto.getId())
+                .content(dto.getContent())
+                .receivedDate(dto.getReceivedDate())
+                .receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                .build();
+    }
 }
