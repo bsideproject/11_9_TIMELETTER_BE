@@ -16,7 +16,18 @@ public class LetterControllerAPI {
 
     private final LetterService letterService;
 
-    @PostMapping("create")
+    @GetMapping
+    public ResponseEntity<?> retrieveLetterList(){
+        List<Letter> entities = letterService.findAll();
+
+        List<LetterDTO> dtos = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
+
+        ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody LetterDTO dto){
         try{
             Letter letter = letterService.create(Letter.toEntity(dto));
@@ -32,17 +43,6 @@ public class LetterControllerAPI {
             return ResponseEntity.badRequest().body(response);
         }
 
-    }
-
-    @GetMapping
-    public ResponseEntity<?> retrieveLetterList(){
-        List<Letter> entities = letterService.findAll();
-
-        List<LetterDTO> dtos = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
-
-        ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
-
-        return ResponseEntity.ok().body(response);
     }
 
     @PutMapping
@@ -63,6 +63,8 @@ public class LetterControllerAPI {
     public ResponseEntity<?> delete(@RequestBody LetterDTO dto){
         try {
             Letter entity = LetterDTO.toEntity(dto);
+
+            letterService.delete(entity);
 
             List<LetterDTO> dtos = new ArrayList<>();
             dtos.add(new LetterDTO(entity));

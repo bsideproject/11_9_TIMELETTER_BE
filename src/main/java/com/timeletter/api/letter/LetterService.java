@@ -54,7 +54,7 @@ public class LetterService {
         return retrieve(entity.getId());
     }
 
-    public  Letter delete(final Letter entity) {
+    public void delete(final Letter entity) {
         validate(entity);
 
         try {
@@ -64,6 +64,5 @@ public class LetterService {
 
             throw new RuntimeException("error deleting entity " + entity.getId());
         }
-        return retrieve(entity.getId());
     }
 }
