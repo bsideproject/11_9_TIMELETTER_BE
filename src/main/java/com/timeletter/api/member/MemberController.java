@@ -1,6 +1,7 @@
 package com.timeletter.api.member;
 
 import com.timeletter.api.dto.ResponseDTO;
+import com.timeletter.api.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody MemberDTO memberDTO){
@@ -34,9 +36,7 @@ public class MemberController {
 
             return ResponseEntity.ok().body(responseUserDTO);
         }catch (Exception e){
-
-            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
@@ -44,16 +44,16 @@ public class MemberController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO){
         Member member = memberService.getByCredentials(memberDTO.getEmail(), memberDTO.getPassword());
-
         if(member != null){
+            final String token = tokenProvider.create(member);
             final MemberDTO responseUserDTO = MemberDTO.builder()
                     .email(member.getUsername())
-                    .id(member.getId()).build();
-
+                    .id(member.getId())
+                    .token(token)
+                    .build();
             return ResponseEntity.ok().body(responseUserDTO);
         }else{
-            ResponseDTO responseDTO = ResponseDTO.builder().error("login failed").build();
-
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("login failed").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
