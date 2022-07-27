@@ -18,12 +18,15 @@ public class LetterDTO {
     private LocalDateTime receivedDate;     // 받을 날짜 지정
     private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
 
+    private String userID;                  // 사용자 ID
+
     public LetterDTO(final Letter letter){
         this.id = letter.getId();
         this.title = letter.getTitle();
         this.content = letter.getContent();
         this.receivedDate = letter.getReceivedDate();
         this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
+        this.userID = letter.getUserID();
     }
 
     public static Letter toEntity(final LetterDTO dto){
@@ -32,6 +35,7 @@ public class LetterDTO {
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                .userID(dto.getUserID())
                 .build();
     }
 }

@@ -65,4 +65,8 @@ public class LetterService {
             throw new RuntimeException("error deleting entity " + entity.getId());
         }
     }
+
+    public List<Letter> findAllByUserId(String userId) {
+        return letterRepository.findAllByUserID(userId);
+    }
 }

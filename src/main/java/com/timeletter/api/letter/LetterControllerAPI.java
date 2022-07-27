@@ -3,6 +3,7 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class LetterControllerAPI {
     private final LetterService letterService;
 
     @GetMapping
-    public ResponseEntity<?> retrieveLetterList(){
-        List<Letter> entities = letterService.findAll();
+    public ResponseEntity<?> retrieveLetterList(@AuthenticationPrincipal String userId){
+        List<Letter> entities = letterService.findAllByUserId(userId);
 
         List<LetterDTO> dtos = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
 
@@ -28,9 +29,13 @@ public class LetterControllerAPI {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody LetterDTO dto){
+    public ResponseEntity<?> create(@RequestBody LetterDTO dto,
+                                    @AuthenticationPrincipal String userId){
         try{
-            Letter letter = letterService.create(Letter.toEntity(dto));
+            Letter letterEntity = Letter.toEntity(dto);
+            letterEntity.setUserID(userId);
+
+            Letter letter = letterService.create(letterEntity);
 
             List<LetterDTO> dtos = new ArrayList<>();
             dtos.add(new LetterDTO(letter));
@@ -46,10 +51,12 @@ public class LetterControllerAPI {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateLetter(@RequestBody LetterDTO dto){
-        Letter Letter = LetterDTO.toEntity(dto);
+    public ResponseEntity<?> updateLetter(@RequestBody LetterDTO dto,
+                                          @AuthenticationPrincipal String userId){
+        Letter letter = LetterDTO.toEntity(dto);
+        letter.setUserID(userId);
 
-        Letter entities = letterService.update(Letter);
+        Letter entities = letterService.update(letter);
 
         List<LetterDTO> dtos = new ArrayList<>();
         dtos.add(new LetterDTO(entities));

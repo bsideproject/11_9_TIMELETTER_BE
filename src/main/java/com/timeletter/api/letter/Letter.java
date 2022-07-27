@@ -27,6 +27,8 @@ public class Letter {
     private LocalDateTime receivedDate;     // 받을 날짜 지정
     private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
 
+    private String userID;                  // 사용자 ID
+
     public static Letter toEntity(final LetterDTO dto) {
         return Letter.builder()
                 .id(dto.getId())
@@ -34,6 +36,7 @@ public class Letter {
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                .userID(dto.getUserID())
                 .build();
     }
 }
