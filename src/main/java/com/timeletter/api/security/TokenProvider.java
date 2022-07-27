@@ -17,7 +17,7 @@ import java.util.Date;
 @Slf4j
 @Service
 public class TokenProvider {
-    private static final String SECRET_KEY = "Ns43fsd233MM9F05f";
+    private static final String SECRET_KEY = "Ns43fsd233MM9F05fNs43fsd233MM9F05fNs43fsd233MM9F05fNs43fsd233MM9F05f";
 
     public String create(Member member){
         Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
@@ -25,7 +25,7 @@ public class TokenProvider {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
-        return Jwts.builder().signWith(key,SignatureAlgorithm.HS512)
+        return Jwts.builder().signWith(key)
                 .setSubject(member.getId())
                 .setIssuer("TimeLetter api")
                 .setIssuedAt(new Date())
