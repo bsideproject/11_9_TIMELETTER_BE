@@ -69,4 +69,8 @@ public class LetterService {
     public List<Letter> findAllByUserId(String userId) {
         return letterRepository.findAllByUserID(userId);
     }
+
+    public Letter findByLetterId(String letterId) {
+        return letterRepository.findById(letterId).get();
+    }
 }

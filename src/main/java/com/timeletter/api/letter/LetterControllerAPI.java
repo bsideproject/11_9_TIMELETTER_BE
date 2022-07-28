@@ -28,6 +28,25 @@ public class LetterControllerAPI {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findLetterByLetterId(@PathVariable("id") String letterId){
+        try{
+            Letter byLetterId = letterService.findByLetterId(letterId);
+
+            List<LetterDTO> dtos = new ArrayList<>();
+            dtos.add(new LetterDTO(byLetterId));
+
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        }catch (Exception e){
+            String error = e.getMessage();
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody LetterDTO dto,
                                     @AuthenticationPrincipal String userId){
