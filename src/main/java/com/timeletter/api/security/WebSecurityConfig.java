@@ -17,7 +17,10 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer configure(){
-        return (web -> web.ignoring().mvcMatchers("/v1/member/**"));
+        return (web -> web.ignoring().mvcMatchers(
+                "/v1/member/**","/v2/api-docs",  "/configuration/ui",
+                "/swagger-resources", "/configuration/security",
+                "/swagger-ui.html", "/webjars/**","/swagger/**"));
     }
 
     @Bean
@@ -33,7 +36,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/v1/member/**").permitAll()
+                .antMatchers("/", "/v1/member/**","/swagger-resources/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().addFilterAfter(jwtAuthenticationFilter,CorsFilter.class)
