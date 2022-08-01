@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,31 @@ public class LetterControllerAPI {
             ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
 
             return ResponseEntity.ok().body(response);
+        }catch (Exception e){
+            String error = e.getMessage();
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("/receive/{id}")
+    public ResponseEntity<?> receiveLetter(@PathVariable("id") String letterId){
+        try {
+            Letter byLetterId = letterService.findByLetterId(letterId);
+            if(byLetterId.getReceivedDate().isAfter(LocalDateTime.now())){
+                List<LetterDTO> dtos = new ArrayList<>();
+                dtos.add(new LetterDTO(byLetterId));
+
+                ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
+
+                return ResponseEntity.ok().body(response);
+            }else{
+                String fail_msg = "아직 시간이 도래하지 않았습니다.";
+                ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(fail_msg).build();
+
+                return ResponseEntity.badRequest().body(response);
+            }
         }catch (Exception e){
             String error = e.getMessage();
             ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(error).build();
