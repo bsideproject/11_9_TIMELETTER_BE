@@ -28,9 +28,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
     // swagger API
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
 
     /* Json Web Token Library add */
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
