@@ -2,6 +2,7 @@ package com.timeletter.api.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Member create(final Member member){
 
@@ -25,10 +27,18 @@ public class MemberService {
             throw new RuntimeException("Email already exists");
         }
 
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+
         return memberRepository.save(member);
     }
 
     public Member getByCredentials(final String email,final String password){
-        return memberRepository.findByEmailAndPassword(email,password);
+        Member byEmail = memberRepository.findByEmail(email);
+        if(!passwordEncoder.matches(password, byEmail.getPassword())){
+            log.warn("password not matched {}",email);
+            throw new RuntimeException("password not matched");
+        }
+
+        return byEmail;
     }
 }
