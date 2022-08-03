@@ -1,6 +1,9 @@
 package com.timeletter.api.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,10 +39,15 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/v1/member/**","/swagger-resources/**").permitAll()
+                .antMatchers("/", "/v1/member/**","/swagger-resources/**","/oauth/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().addFilterAfter(jwtAuthenticationFilter,CorsFilter.class)
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

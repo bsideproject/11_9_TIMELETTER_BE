@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,5 +41,13 @@ public class MemberService {
         }
 
         return byEmail;
+    }
+
+    public boolean existByEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 }
