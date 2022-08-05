@@ -23,6 +23,8 @@ public class LetterDTO {
 
     private String userID;                  // 사용자 ID - 누가 작성했는지 알려준다.
 
+    private LetterStatus letterStatus;
+
     public LetterDTO(final Letter letter){
         this.id = letter.getId();
         this.title = letter.getTitle();
@@ -30,6 +32,7 @@ public class LetterDTO {
         this.receivedDate = letter.getReceivedDate();
         this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
         this.userID = letter.getUserID();
+        this.letterStatus = letter.getLetterStatus();
     }
 
     public static Letter toEntity(final LetterDTO dto){
@@ -39,6 +42,7 @@ public class LetterDTO {
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
                 .userID(dto.getUserID())
+                .letterStatus(dto.getLetterStatus())
                 .build();
     }
 }

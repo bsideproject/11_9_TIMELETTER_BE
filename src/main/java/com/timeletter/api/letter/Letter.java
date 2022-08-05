@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
@@ -28,6 +26,9 @@ public class Letter {
     private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
 
     private String userID;                  // 사용자 ID
+
+    @Enumerated(EnumType.STRING)
+    private LetterStatus letterStatus;      // 편지의 상태
 
     public static Letter toEntity(final LetterDTO dto) {
         return Letter.builder()

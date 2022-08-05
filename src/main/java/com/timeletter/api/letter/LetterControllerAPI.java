@@ -79,20 +79,27 @@ public class LetterControllerAPI {
         try{
             Letter letterEntity = Letter.toEntity(dto);
             letterEntity.setUserID(userId);
+            Letter letter = new Letter();
 
-            Letter letter = letterService.create(letterEntity);
+            // 임시저장상태의 요청이 왔을 경우
+            if(dto.getLetterStatus().equals(LetterStatus.DRAFT)){
+                letter = letterService.create(letterEntity);
+            }
+            // 저장완료, 전송완료 상태의 요청이 왔을 경우
+            if(dto.getLetterStatus().equals(LetterStatus.DONE) || dto.getLetterStatus().equals(LetterStatus.SUBMIT)){
+                letter = letterService.update(letterEntity);
+            }
 
-            List<LetterDTO> dtos = new ArrayList<>();
-            dtos.add(new LetterDTO(letter));
+            List<LetterDTO> result = new ArrayList<>();
+            result.add(new LetterDTO(letter));
 
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
-
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(result).build();
             return ResponseEntity.ok().body(response);
+
         }catch (Exception e){
             ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(response);
         }
-
     }
 
     @PutMapping

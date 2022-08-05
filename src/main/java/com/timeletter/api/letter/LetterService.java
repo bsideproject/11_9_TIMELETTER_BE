@@ -46,9 +46,10 @@ public class LetterService {
 
         final Optional<Letter> original = letterRepository.findById(entity.getId());
 
-        original.ifPresent(Letter -> {
-            Letter.setContent(entity.getContent());
-            letterRepository.save(Letter);
+        original.ifPresent(letter -> {
+            letter.setContent(entity.getContent());
+            letter.setLetterStatus(entity.getLetterStatus());
+            letterRepository.save(letter);
         });
 
         return retrieve(entity.getId());
