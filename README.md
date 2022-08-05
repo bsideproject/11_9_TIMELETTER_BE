@@ -21,10 +21,11 @@ for building and running the application you need:
 
 ### 목표 기능
 
-* 편지 API CRUD (~7/21, 진행)
-* 카카오 로그인 및 회원가입 API 학습 (~7/28, 진행)
-* 카카오 로그인 및 회원가입 API 적용 (~8/4, 진행)
-* Swagger 적용 (~8/10, 진행)
+* 편지 API CRUD (~7/21, 완료)
+* 카카오 로그인 및 회원가입 API 학습 (~7/28, 완료)
+* 카카오 로그인 및 회원가입 API 적용 (~8/4, 완료)
+* Swagger 적용 (~8/4, 완료)
+* Validation 적용 (~8/10, 진행)
 
 ### 참고해본 레퍼런스
 
@@ -34,3 +35,5 @@ for building and running the application you need:
   * [Restful 하다는 것은 뭘까?](https://dkyou.tistory.com/356)
 * Spring Boot Controller 에서 매개변수 넘겨받는 방법
   * [Controller 단에서 매개변수 넘겨받기](https://dkyou.tistory.com/357)
+* Enum 관리를 해보자
+  * [ENUM 으로 컬럼 관리하기](https://gofnrk.tistory.com/102)

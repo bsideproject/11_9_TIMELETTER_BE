@@ -1,6 +1,7 @@
 package com.timeletter.api.letter;
 
 import com.timeletter.api.dto.ResponseDTO;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Api(tags = {"Letter Info"},description = "편지 관련 서비스")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/letter")
