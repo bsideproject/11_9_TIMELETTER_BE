@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/v1/member/**","/swagger-resources/**","/oauth/**").permitAll()
+                .antMatchers("/", "/v1/member/**","/swagger-resources/**","/oauth/**","/v2/api-docs","/swagger*/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().addFilterAfter(jwtAuthenticationFilter,CorsFilter.class)
