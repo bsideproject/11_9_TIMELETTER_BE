@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,4 +17,10 @@ public class MemberDTO {
     private String username;
     private String password;
     private String id;
+    private String nickname;        // 카카오 프로필 닉네임
+    private String gender;
+    private String ageRange;        // 연령대
+    private String birthday;
+    private String birthyear;       // 출생연도
+    private String phoneNumber;
 }
