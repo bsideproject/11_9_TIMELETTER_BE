@@ -19,7 +19,8 @@ public class OAuthService{
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String CLIENT_ID;
 
-    private static final String REDIRECT_URI = "http://localhost:8080/oauth/kakao";
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String REDIRECT_URI;
 
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
@@ -38,9 +39,9 @@ public class OAuthService{
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id="+CLIENT_ID);         // REST_API_KEY 입력
-            sb.append("&redirect_uri="+REDIRECT_URI);   // 인가코드 받은 redirect_uri 입력
-            sb.append("&code=" + code);
+            sb.append("&client_id=").append(CLIENT_ID);         // REST_API_KEY 입력
+            sb.append("&redirect_uri=").append(REDIRECT_URI);   // 인가코드 받은 redirect_uri 입력
+            sb.append("&code=").append(code);                   // CODE 입력
             bw.write(sb.toString());
             bw.flush();
 
