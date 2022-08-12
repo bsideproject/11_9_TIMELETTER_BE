@@ -20,7 +20,7 @@ public class TokenProvider {
     private static final String SECRET_KEY = "Ns43fsd233MM9F05fNs43fsd233MM9F05fNs43fsd233MM9F05fNs43fsd233MM9F05f";
 
     public String create(Member member){
-        Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+        Date expiryDate = Date.from(Instant.now().plus(3, ChronoUnit.MONTHS));
 
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         Key key = Keys.hmacShaKeyFor(keyBytes);
