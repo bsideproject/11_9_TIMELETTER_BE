@@ -25,6 +25,7 @@ jobs:
 
       - name: log test
         run: |
+          cd src
           pwd
           ls -al
         
