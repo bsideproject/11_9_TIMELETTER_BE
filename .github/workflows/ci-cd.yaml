@@ -28,13 +28,14 @@ jobs:
 
       - name: make application-prod.yml
         run: |
-          pwd
-          cd ./src/main/resources
-          pwd
+          cd /home/runner/work/11_9_TIMELETTER_BE/11_9_TIMELETTER_BE/src/main/resources
           touch ./application-prod.yml
           echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yml
         shell: bash
       
+      - name: log test
+        run: pwd
+        
       - name: Build with Gradle
         run: chmod +x gradlew
       
