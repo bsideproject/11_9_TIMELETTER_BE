@@ -23,21 +23,14 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure(){
         return (web -> web.ignoring().mvcMatchers(
-                "/v1/member/**","/v2/api-docs",  "/configuration/ui",
-                "/swagger-resources", "/configuration/security",
-                "/swagger-ui.html", "/webjars/**","/swagger/**"));
+                "/v1/member/**","/v3/api-docs/**","/swagger-ui/**"));
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedHeader(CorsConfiguration.ALL);
-        configuration.addAllowedMethod(CorsConfiguration.ALL);
-        configuration.addAllowedOrigin(CorsConfiguration.ALL);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
         return http
-                .cors().configurationSource(source)
+                .cors()
                 .and()
                 .csrf().disable()
                 .httpBasic()
