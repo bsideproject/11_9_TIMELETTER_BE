@@ -5,13 +5,19 @@ import com.timeletter.api.member.Member;
 import com.timeletter.api.member.MemberDTO;
 import com.timeletter.api.member.MemberService;
 import com.timeletter.api.security.TokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@Api(tags = {"Kakao Login"}, description = "카카오 로그인")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
@@ -25,6 +31,14 @@ public class OAuthController {
      * 카카오 callback
      * [GET] /oauth/kakao/callback
      */
+    @Operation(summary = "카카오 로그인", description = "코드 기반의 카카오 로그인 로직.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @ResponseBody
     @GetMapping("/kakao")
     public ResponseEntity<?> kakaoCallback(@RequestParam String code) {

@@ -2,6 +2,9 @@ package com.timeletter.api.letter;
 
 import com.timeletter.api.dto.ResponseDTO;
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api(tags = {"Letter Info"},description = "편지 관련 서비스")
+@Api(tags = {"Letter Info"}, description = "편지 관련 API")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/letter")
@@ -20,6 +23,14 @@ public class LetterControllerAPI {
 
     private final LetterService letterService;
 
+    @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @GetMapping
     public ResponseEntity<?> retrieveLetterList(@AuthenticationPrincipal String userId){
         List<Letter> entities = letterService.findAllByUserId(userId);
@@ -31,6 +42,14 @@ public class LetterControllerAPI {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "편지 상세 조회", description = "회원이 보유한 편지 상세 내용을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> findLetterByLetterId(@PathVariable("id") String letterId){
         try{
@@ -50,6 +69,14 @@ public class LetterControllerAPI {
         }
     }
 
+    @Operation(summary = "편지 받은 사람이 조회", description = "회원이 전달받은 편지 상세 내용을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @GetMapping("/receive/{id}")
     public ResponseEntity<?> receiveLetter(@PathVariable("id") String letterId){
         try {
@@ -75,6 +102,14 @@ public class LetterControllerAPI {
         }
     }
 
+    @Operation(summary = "편지 생성", description = "편지 생성.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @PostMapping
     public ResponseEntity<?> create(@RequestBody LetterDTO dto,
                                     @AuthenticationPrincipal String userId){
@@ -84,11 +119,11 @@ public class LetterControllerAPI {
             Letter letter = new Letter();
 
             // 임시저장상태의 요청이 왔을 경우
-            if(dto.getLetterStatus().equals(LetterStatus.DRAFT)){
+            if(letterEntity.getLetterStatus().equals(LetterStatus.DRAFT)){
                 letter = letterService.create(letterEntity);
             }
             // 저장완료, 전송완료 상태의 요청이 왔을 경우
-            if(dto.getLetterStatus().equals(LetterStatus.DONE) || dto.getLetterStatus().equals(LetterStatus.SUBMIT)){
+            if(letterEntity.getLetterStatus().equals(LetterStatus.DONE) || letterEntity.getLetterStatus().equals(LetterStatus.SUBMIT)){
                 letter = letterService.update(letterEntity);
             }
 
@@ -104,6 +139,14 @@ public class LetterControllerAPI {
         }
     }
 
+    @Operation(summary = "편지 수정", description = "회원의 편지 상세 내용을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @PutMapping
     public ResponseEntity<?> updateLetter(@RequestBody LetterDTO dto,
                                           @AuthenticationPrincipal String userId){
@@ -120,6 +163,14 @@ public class LetterControllerAPI {
         return ResponseEntity.ok().body(response);
     }
 
+    @Operation(summary = "편지 삭제", description = "편지를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
     @DeleteMapping
     public ResponseEntity<?> delete(@RequestBody LetterDTO dto){
         try {
