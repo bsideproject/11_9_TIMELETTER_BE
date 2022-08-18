@@ -22,7 +22,21 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-
+      - name: make application-prod.yml
+        run: |
+          pwd
+          ls -al
+          cd src
+      - name: make application-prod.yml
+        run: |
+          pwd
+          ls -al
+          cd src
+      - name: make application-prod.yml
+        run: |
+          pwd
+          ls -al
+          cd src
       - name: make application-prod.yml
         run: |
           pwd
