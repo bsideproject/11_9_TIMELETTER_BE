@@ -26,6 +26,9 @@ jobs:
       - name: log test
         run: pwd
 
+     - name: log test222
+       run: ls -al
+
       - name: make application-prod.yml
         run: |
           cd /home/runner/work/11_9_TIMELETTER_BE/11_9_TIMELETTER_BE/src/main/resources
@@ -35,7 +38,7 @@ jobs:
       
       - name: log test
         run: pwd
-        
+
       - name: Build with Gradle
         run: chmod +x gradlew
       
