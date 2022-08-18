@@ -24,10 +24,10 @@ jobs:
           distribution: 'temurin'
 
       - name: log test
-        run: pwd
-
-     - name: log test222
-       run: ls -al
+        run: |
+          pwd
+          ls -al
+        
 
       - name: make application-prod.yml
         run: |
