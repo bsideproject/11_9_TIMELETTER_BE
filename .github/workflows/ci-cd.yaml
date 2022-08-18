@@ -61,12 +61,12 @@ jobs:
           key: ${{ secrets.SERVER_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-            docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
-            docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
-            docker run --name ${{ secrets.DOCKER_IMAGE_NAME }} -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-            docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+            sudo docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker run --name ${{ secrets.DOCKER_IMAGE_NAME }} -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
+            sudo docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
       
       - name: slack-action-success
         uses: 8398a7/action-slack@v3
