@@ -10,5 +10,5 @@ public enum LetterStatus {
     DONE("작성완료"),
     SUBMIT("전송완료");
 
-    private String status;
+    private final String status;
 }

@@ -38,6 +38,7 @@ public class Letter {
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
                 .userID(dto.getUserID())
+                .letterStatus(LetterStatus.DRAFT)
                 .build();
     }
 }
