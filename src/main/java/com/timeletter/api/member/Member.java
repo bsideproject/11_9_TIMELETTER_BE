@@ -20,7 +20,6 @@ public class Member {
     @GenericGenerator(name = "system-uuid",strategy = "uuid")
     private String id;
 
-    @Column(nullable = false)
     private String nickname;        // 카카오 프로필 닉네임
 
     @Column(nullable = false)
@@ -32,19 +31,14 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
     private String ageRange;
 
-    @Column(nullable = false)
     private String birthday;
 
-    @Column(nullable = false)
     private String birthyear;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
 }
