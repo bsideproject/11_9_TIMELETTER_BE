@@ -23,6 +23,9 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: log test
+        run: pwd
+
       - name: make application-prod.yml
         run: |
           pwd
