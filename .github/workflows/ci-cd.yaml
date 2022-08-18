@@ -22,44 +22,14 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: make application-prod.yml111
-        run: |
-          pwd
-          ls -al
-          cd ./src
-          pwd
-          ls -al
-          cd ./main
-          pwd
-          ls -al
-      - name: make application-prod.yml222
-        run: |
-          pwd
-          ls -al
-          cd src/main
-          pwd
-          ls -al
-      - name: make application-prod.yml3333
-        run: |
-          pwd
-          ls -al
-          cd src
-          pwd
-          ls -al
-          cd main
-          pwd
-          ls -al
 
       - name: make application-prod.yml
         run: |
-          pwd
-          ls -al
-          cd src/main/resources
-          pwd
+          cd src/main
+          mkdir resources
           touch ./application-prod.yml
           echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yml
         shell: bash
-
 
       - name: Build with Gradle
         run: chmod +x gradlew
