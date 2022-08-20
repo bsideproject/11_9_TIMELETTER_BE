@@ -26,8 +26,8 @@ jobs:
       - name: make application-prod.yml
         run: |
           cd src/main
-          mkdir resources
-          cd resources
+          mkdir resource
+          cd resource
           touch ./application-prod.yml
           echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yml
           cat ./application-prod.yml
