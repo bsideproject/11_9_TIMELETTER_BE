@@ -18,6 +18,7 @@ public class Letter {
 
     @Id @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid",strategy = "uuid")
+    @Column(name = "letter_id")
     private String id;
 
     private String title;                   // 편지 제목

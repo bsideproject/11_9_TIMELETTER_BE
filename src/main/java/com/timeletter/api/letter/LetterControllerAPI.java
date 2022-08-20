@@ -1,15 +1,22 @@
 package com.timeletter.api.letter;
 
 import com.timeletter.api.dto.ResponseDTO;
+import com.timeletter.api.image.Image;
+import com.timeletter.api.image.ImageService;
+import com.timeletter.api.member.Member;
+import com.timeletter.api.member.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,7 @@ import java.util.stream.Collectors;
 public class LetterControllerAPI {
 
     private final LetterService letterService;
+    private final ImageService imageService;
 
     @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
     @ApiResponses({
@@ -184,6 +192,31 @@ public class LetterControllerAPI {
             ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
 
             return ResponseEntity.ok().body(response);
+        }catch (Exception e){
+            String error = e.getMessage();
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping(value = "/imageUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> handleFileUpload(@RequestParam("letterId") String letterId,
+                                    @RequestParam("file") MultipartFile file) throws IOException {
+        try {
+            String savedImageId = imageService.save(file, letterId);
+
+            Letter byLetterId = letterService.findByLetterId(letterId);
+
+            List<LetterDTO> dtos = new ArrayList<>();
+            LetterDTO letterDTO = new LetterDTO(byLetterId);
+            letterDTO.setImageId(savedImageId);
+            dtos.add(letterDTO);
+
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+
         }catch (Exception e){
             String error = e.getMessage();
             ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(error).build();
