@@ -67,7 +67,7 @@ jobs:
       - name: slack-action-success
         uses: 8398a7/action-slack@v3
         with:
-          text: '[Github Actions]백엔드 배포 완료'
+          text: '[Github Actions]백엔드 배포 완료2'
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
         env:
