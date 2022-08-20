@@ -26,11 +26,11 @@ jobs:
       - name: make application-prod.yml
         run: |
           cd src/main
-          mkdir resource
-          cd resource
-          touch ./application-prod.yml
-          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yml
-          cat ./application-prod.yml
+          mkdir resources
+          cd resources
+          touch ./application-prod.yaml
+          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yaml
+          cat ./application-prod.yaml
           ls -al
           pwd
         shell: bash
