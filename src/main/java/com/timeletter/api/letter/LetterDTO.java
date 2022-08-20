@@ -25,6 +25,8 @@ public class LetterDTO {
 
     private LetterStatus letterStatus;
 
+    private String imageId;                 // 등록된 이미지 아이디
+
     public LetterDTO(final Letter letter){
         this.id = letter.getId();
         this.title = letter.getTitle();
