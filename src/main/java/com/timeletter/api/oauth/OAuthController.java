@@ -65,7 +65,7 @@ public class OAuthController {
 
         }catch (Exception e){
             e.printStackTrace();
-            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("카카오 회원가입 및 로그인 도중 에러가 발생했습니다.").build();
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
