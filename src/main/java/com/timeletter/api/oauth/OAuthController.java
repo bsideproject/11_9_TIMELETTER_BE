@@ -7,8 +7,6 @@ import com.timeletter.api.member.MemberService;
 import com.timeletter.api.security.TokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +43,35 @@ public class OAuthController {
         try {
             String kakaoAccessToken = oAuthService.getKakaoAccessToken(code);
             log.info("access_token : " + kakaoAccessToken);
-            Member member = oAuthService.createKakaoUser(kakaoAccessToken);
+            final MemberDTO responseUserDTO = MemberDTO.builder()
+                    .token(kakaoAccessToken)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+    /**
+     * 카카오 callback
+     * [GET] /oauth/kakao/callback
+     */
+    @Operation(summary = "카카오 로그인", description = "코드 기반의 카카오 로그인 로직.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @ResponseBody
+    @GetMapping("/accessToken")
+    public ResponseEntity<?> kakaoAccessToken(@RequestParam String token) {
+        try {
+            log.info("access_token : " + token);
+            Member member = oAuthService.createKakaoUser(token);
 
             // 백엔드 서버에 해당 정보가 존재하는지 확인
             if(!memberService.existByEmail(member.getEmail())){
@@ -55,11 +81,11 @@ public class OAuthController {
                 log.info("kakao 회원가입 로직 완료");
             }
             Member byEmailAndPassword = memberService.findByEmail(member.getEmail());
-            final String token = tokenProvider.create(byEmailAndPassword);
+            final String loginToken = tokenProvider.create(byEmailAndPassword);
             final MemberDTO responseUserDTO = MemberDTO.builder()
                     .email(member.getEmail())
                     .id(member.getId())
-                    .token(token)
+                    .token(loginToken)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
 
