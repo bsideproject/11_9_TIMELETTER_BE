@@ -20,14 +20,14 @@ public class LetterService {
         return letterRepository.findAll();
     }
 
-    public Letter create(final Letter entity){
+    public String create(final Letter entity){
         validate(entity);
 
         letterRepository.save(entity);
 
         log.info("Entity id : {} is saved",entity.getId());
 
-        return letterRepository.findById(entity.getId()).get();
+        return letterRepository.findById(entity.getId()).get().getId();
     }
 
     private void validate(Letter entity) {
@@ -47,8 +47,11 @@ public class LetterService {
         final Optional<Letter> original = letterRepository.findById(entity.getId());
 
         original.ifPresent(letter -> {
+            letter.setTitle(entity.getTitle());
             letter.setContent(entity.getContent());
             letter.setLetterStatus(entity.getLetterStatus());
+            letter.setReceivedDate(entity.getReceivedDate());
+            letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
             letterRepository.save(letter);
         });
 
