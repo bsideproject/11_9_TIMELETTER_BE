@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Api(tags = {"Letter Info"}, description = "편지 관련 API")
 @RestController
 @AllArgsConstructor
@@ -123,13 +125,16 @@ public class LetterControllerAPI {
     public ResponseEntity<?> create(@RequestBody LetterDTO dto,
                                     @AuthenticationPrincipal String userId){
         try{
+            log.info("편지 생성 작업 로직 시작합니다.");
+            log.info("Request Body : " + dto);
             Letter letterEntity = Letter.toEntity(dto);
             letterEntity.setUserID(userId);
             Letter letter = new Letter();
 
             // 임시저장상태의 요청이 왔을 경우
             if(letterEntity.getLetterStatus().equals(LetterStatus.DRAFT)){
-                letter = letterService.create(letterEntity);
+                String letterId = letterService.create(letterEntity);
+                letter = letterService.findByLetterId(letterId);
             }
             // 저장완료, 전송완료 상태의 요청이 왔을 경우
             if(letterEntity.getLetterStatus().equals(LetterStatus.DONE) || letterEntity.getLetterStatus().equals(LetterStatus.SUBMIT)){
