@@ -76,7 +76,7 @@ public class OAuthController {
             // 백엔드 서버에 해당 정보가 존재하는지 확인
             if(!memberService.existByEmail(member.getEmail())){
                 log.info("kakao 회원가입 로직 시작");
-                Member newKakaoUser = Member.builder().email(member.getEmail()).password(member.getId()).username(member.getUsername()).build();
+                Member newKakaoUser = Member.builder().email(member.getEmail()).password(member.getId()).username(member.getNickname()).build();
                 memberService.create(newKakaoUser);
                 log.info("kakao 회원가입 로직 완료");
             }
