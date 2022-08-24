@@ -129,17 +129,20 @@ public class LetterControllerAPI {
             log.info("Request Body : " + dto);
             Letter letterEntity = Letter.toEntity(dto);
             letterEntity.setUserID(userId);
-            Letter letter = new Letter();
+            String letterId = "";
 
             // 임시저장상태의 요청이 왔을 경우
             if(letterEntity.getLetterStatus().equals(LetterStatus.DRAFT)){
-                String letterId = letterService.create(letterEntity);
-                letter = letterService.findByLetterId(letterId);
+                letterId = letterService.create(letterEntity);
+                log.info("편지 생성 완료");
             }
             // 저장완료, 전송완료 상태의 요청이 왔을 경우
             if(letterEntity.getLetterStatus().equals(LetterStatus.DONE) || letterEntity.getLetterStatus().equals(LetterStatus.SUBMIT)){
-                letter = letterService.update(letterEntity);
+                letterId = letterService.update(letterEntity);
+                log.info("편지 상태 업데이트 완료");
             }
+
+            Letter letter = letterService.findByLetterId(letterId);
 
             List<LetterDTO> result = new ArrayList<>();
             result.add(new LetterDTO(letter));
@@ -167,7 +170,8 @@ public class LetterControllerAPI {
         Letter letter = LetterDTO.toEntity(dto);
         letter.setUserID(userId);
 
-        Letter entities = letterService.update(letter);
+        String letterId = letterService.update(letter);
+        Letter entities = letterService.findByLetterId(letterId);
 
         List<LetterDTO> dtos = new ArrayList<>();
         dtos.add(new LetterDTO(entities));
