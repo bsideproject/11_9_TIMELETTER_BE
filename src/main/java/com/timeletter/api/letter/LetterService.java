@@ -159,6 +159,32 @@ public class LetterService {
 
 
     /**
+     * 편지 수신인 전화번호를 변경하고자 한다.
+     *
+     * @param letterId 수신인 편지를 수정할 편지 ID
+     * @param phoneNumber 변경하고자하는 전화번호
+     * @return 수정된 편지 Entity
+     */
+    public ResponseEntity<?> processUpdateLetterReceiver(String letterId, String phoneNumber) {
+        try {
+            Letter entity = findByLetterId(letterId);
+
+            this.updateReceiver(entity,phoneNumber);
+
+            List<LetterDTO> data = new ArrayList<>();
+            retrieve(letterId).ifPresent(letter -> {
+                data.add(new LetterDTO(letter));
+            });
+
+            return returnOkRequest(data);
+        }catch (Exception e){
+            return returnBadRequest(e);
+        }
+    }
+
+
+
+    /**
      * 편지 삭제 프로세스
      *
      * @param dto 편지 DTO
@@ -241,6 +267,25 @@ public class LetterService {
         return entity.getId();
     }
 
+    /**
+     * 편지 수신인을 업데이트 한다.
+     *
+     * @param entity 편지 엔티티
+     * @return saveId 수정된 편지 아이디
+     */
+    public String updateReceiver(final Letter entity,String newPhoneNumber) {
+        validate(entity);
+
+        final Optional<Letter> original = retrieve(entity.getId());
+
+        original.ifPresent(letter -> {
+            letter.setReceivedPhoneNumber(newPhoneNumber);
+            save(letter);
+        });
+
+        return entity.getId();
+    }
+
     private ResponseEntity<?> returnBadRequest(Exception e) {
         ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.toString()).build();
         return ResponseEntity.badRequest().body(response);
@@ -302,5 +347,6 @@ public class LetterService {
     public void delete(Letter letter){
         letterRepository.delete(letter);
     }
+
 
 }

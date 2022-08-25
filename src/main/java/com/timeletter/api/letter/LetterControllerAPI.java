@@ -49,13 +49,12 @@ public class LetterControllerAPI {
             @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
-
-
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findLetterByLetterId(@PathVariable("id") String letterId){
         return letterService.processFindLetterById(letterId);
     }
+
+
 
     @Operation(summary = "편지 받은 사람이 조회", description = "회원이 전달받은 편지 상세 내용을 조회합니다.")
     @ApiResponses({
@@ -100,6 +99,21 @@ public class LetterControllerAPI {
     public ResponseEntity<?> updateLetter(@RequestBody LetterDTO dto,
                                           @AuthenticationPrincipal String userId){
         return letterService.processUpdateLetter(dto,userId);
+    }
+
+
+
+    @Operation(summary = "수신인 수정", description = "회원의 편지 수신인을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @PutMapping("/updateReceiver")
+    public ResponseEntity<?> updateLetterReceiver(@RequestBody LetterDTO dto){
+        return letterService.processUpdateLetterReceiver(dto.getId(),dto.getReceivedPhoneNumber());
     }
 
 
