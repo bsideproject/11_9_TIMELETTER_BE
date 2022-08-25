@@ -3,6 +3,7 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +38,9 @@ public class LetterService {
                 data.add(new LetterDTO(letter));
             });
 
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
-            return ResponseEntity.ok().body(response);
+            return returnOkRequest(data);
         }catch (Exception e){
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(response);
+            return returnBadRequest(e);
         }
     }
 
@@ -59,12 +58,9 @@ public class LetterService {
 
             List<LetterDTO> data = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
 
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
-
-            return ResponseEntity.ok().body(response);
+            return returnOkRequest(data);
         }catch (Exception e){
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(response);
+            return returnBadRequest(e);
         }
     }
 
@@ -90,13 +86,10 @@ public class LetterService {
                     data.add(letterDTO);
                 }
             });
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
 
-            return ResponseEntity.ok().body(response);
+            return returnOkRequest(data);
         }catch (Exception e){
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.getMessage()).build();
-
-            return ResponseEntity.badRequest().body(response);
+            return returnBadRequest(e);
         }
     }
 
@@ -180,9 +173,7 @@ public class LetterService {
             List<LetterDTO> data = new ArrayList<>();
             data.add(new LetterDTO(entity));
 
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
-
-            return ResponseEntity.ok().body(response);
+            return returnOkRequest(data);
         }catch (Exception e){
             log.error("Error deleting entity ", entity.getId(),e);
             return returnBadRequest(e);
@@ -297,7 +288,9 @@ public class LetterService {
 
     @Transactional
     public Letter findByLetterId(String letterId) {
-        return letterRepository.findById(letterId).orElseThrow(() -> new IllegalArgumentException(letterId+" 에 해당하는 편지 Entity가 존재하지 않습니다."));
+        return letterRepository.findById(letterId).orElseThrow(
+                () -> new IllegalArgumentException(String.format("아이디 : {} 에 해당하는 편지 Entity가 존재하지 않습니다.", letterId))
+        );
     }
 
     @Transactional
