@@ -152,7 +152,7 @@ public class LetterControllerAPI {
             return ResponseEntity.ok().body(response);
 
         }catch (Exception e){
-            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.getMessage()).build();
+            ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().error(e.toString()).build();
             return ResponseEntity.badRequest().body(response);
         }
     }
