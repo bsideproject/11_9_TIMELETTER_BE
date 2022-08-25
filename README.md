@@ -11,6 +11,15 @@ for building and running the application you need:
 * Spring Boot
 * H2 Database
 
+## config
+### 📍Spring Boot
+- Version : 2.7.1
+### 📍Java
+- Version : 11
+### 📍Swagger
+- version : 3.0.0
+- URL: https://api.timeletter.net/swagger-ui/index.html
+
 ### 개발 전 목표
 
 * TDD 를 이용해서 개발하자
@@ -22,8 +31,7 @@ for building and running the application you need:
 ### 목표 기능
 
 * 편지 API CRUD (~7/21, 완료)
-* 카카오 로그인 및 회원가입 API 학습 (~7/28, 완료)
-* 카카오 로그인 및 회원가입 API 적용 (~8/4, 완료)
+* 카카오 로그인 및 회원가입 API 학습 및 적용 (~8/4, 완료)
 * Swagger 적용 (~8/4, 완료)
 * Validation 적용 (~8/10, 진행)
 
