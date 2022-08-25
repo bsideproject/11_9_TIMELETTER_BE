@@ -2,6 +2,11 @@
 
 Time letter(이하 TL)는 느린 우체통을 모티브로 한 서비스입니다.
 
+### Pre Image
+
+![image](https://user-images.githubusercontent.com/26649731/186671901-8cb50560-3555-4a83-9565-0f767c2105f9.png)
+![image](https://user-images.githubusercontent.com/26649731/186672385-a40baa28-aeeb-4fea-8480-a2031f9b7170.png)
+![image](https://user-images.githubusercontent.com/26649731/186672569-681c96c1-5467-4b49-a9db-97f9c21a703e.png)
 ### Requirements
 
 for building and running the application you need:
