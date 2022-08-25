@@ -135,6 +135,7 @@ public class LetterControllerAPI {
             if(letterEntity.getLetterStatus().equals(LetterStatus.DRAFT)){
                 letterId = letterService.create(letterEntity);
                 log.info("편지 생성 완료");
+                return ResponseEntity.ok().body("편지 생성 완료");
             }
             // 저장완료, 전송완료 상태의 요청이 왔을 경우
             if(letterEntity.getLetterStatus().equals(LetterStatus.DONE) || letterEntity.getLetterStatus().equals(LetterStatus.SUBMIT)){
