@@ -22,7 +22,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig implements WebMvcConfigurer {
+public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -32,15 +32,24 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 "/v1/letter/**","/v1/member/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken"));
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        WebMvcConfigurer.super.addCorsMappings(registry);
-        registry.addMapping("/**")
-                .allowedOrigins("https://timeletter.net");
+    /**
+     * https://wonit.tistory.com/572 참고해서 구현
+     */
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("https://timeletter.net");
+            }
+        };
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        /**
+         * https://velog.io/@minchae75/Spring-boot-CORS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0 참고해서 구현
+         */
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("https://timeletter.net"));
