@@ -3,11 +3,12 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.message.StringFormattedMessage;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,31 @@ public class LetterService {
             List<LetterDTO> data = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
 
             return returnOkRequest(data);
+        }catch (Exception e){
+            return returnBadRequest(e);
+        }
+    }
+
+    /**
+     * 해당 유저에 해당하는 편지 리스트 조회
+     *
+     * @param userId 편지 리스트 조회하고자하는 유저 아이디
+     * @return 편지 리스트
+     */
+    public ResponseEntity<?> processRetrieveLetterList2(String userId) {
+        try {
+            List<Object> data = new ArrayList<>();
+
+            LetterStatus.list().forEach(letterStatus -> {
+                List<Letter> allByUserIdAndLetterStatus = this.findAllByUserIdAndLetterStatus(userId, letterStatus);
+                if(allByUserIdAndLetterStatus.size()!=0){
+                    List<LetterDTO> dto = allByUserIdAndLetterStatus.stream().map(LetterDTO::new).collect(Collectors.toList());
+                    data.add(dto);
+                }
+            });
+
+            ResponseDTO<Object> response = ResponseDTO.<Object>builder().data(data).build();
+            return ResponseEntity.ok().body(response);
         }catch (Exception e){
             return returnBadRequest(e);
         }
@@ -313,6 +339,11 @@ public class LetterService {
             log.warn("Entity cannot be null.");
             throw new RuntimeException("Entity cannot be null");
         }
+    }
+
+    @Transactional
+    public List<Letter> findAllByUserIdAndLetterStatus(String id, LetterStatus status){
+        return letterRepository.findAllByUserIDAndLetterStatus(id,status);
     }
 
     @Deprecated

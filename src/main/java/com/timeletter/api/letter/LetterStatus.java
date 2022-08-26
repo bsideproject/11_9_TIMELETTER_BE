@@ -3,6 +3,8 @@ package com.timeletter.api.letter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public enum LetterStatus {
@@ -12,4 +14,9 @@ public enum LetterStatus {
     NOT_YET("아직 시간이 도래하지 않음");
 
     private final String status;
+
+    public static List<LetterStatus> list(){
+        return List.of(LetterStatus.values());
+    }
+
 }

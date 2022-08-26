@@ -7,11 +7,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.print.Pageable;
 
 
 @Slf4j
@@ -37,6 +40,20 @@ public class LetterControllerAPI {
     @GetMapping
     public ResponseEntity<?> retrieveLetterList(@AuthenticationPrincipal String userId){
         return letterService.processRetrieveLetterList(userId);
+    }
+
+
+    @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @GetMapping("/version2")
+    public ResponseEntity<?> retrieveLetterList2(@AuthenticationPrincipal String userId){
+        return letterService.processRetrieveLetterList2(userId);
     }
 
 
