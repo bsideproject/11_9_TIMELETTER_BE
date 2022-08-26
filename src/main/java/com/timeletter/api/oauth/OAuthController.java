@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @Slf4j
 @Api(tags = {"Kakao Login"}, description = "카카오 로그인")
 @RestController
