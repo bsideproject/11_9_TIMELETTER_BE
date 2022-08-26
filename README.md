@@ -50,3 +50,6 @@ for building and running the application you need:
   * [Controller 단에서 매개변수 넘겨받기](https://dkyou.tistory.com/357)
 * Enum 관리를 해보자
   * [ENUM 으로 컬럼 관리하기](https://gofnrk.tistory.com/102)
+* CORS란 무엇이고 어떻게 적용하는 것일까?
+  * [CORS 적용해보기](https://shinsunyoung.tistory.com/86)
+  * [CORS 적용해보기2](https://velog.io/@minchae75/Spring-boot-CORS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
