@@ -53,3 +53,8 @@ for building and running the application you need:
 * CORS란 무엇이고 어떻게 적용하는 것일까?
   * [CORS 적용해보기](https://shinsunyoung.tistory.com/86)
   * [CORS 적용해보기2](https://velog.io/@minchae75/Spring-boot-CORS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
+  * [CORS 적용해보기3](https://wonit.tistory.com/572)
+* Pagenation을 해보자
+  * 
+* TDD를 해보자
+  * [TDD 적용해보기1](https://wonit.tistory.com/493?category=738059)
