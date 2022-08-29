@@ -31,6 +31,10 @@ public class Letter {
     @Enumerated(EnumType.STRING)
     private LetterStatus letterStatus;      // 편지의 상태
 
+    private String senderName;              // 보내는 사람의 이름
+
+    private String receiverName;            // 받는 사람의 이름
+
     public static Letter toEntity(final LetterDTO dto) {
         return Letter.builder()
                 .id(dto.getId())
@@ -40,6 +44,8 @@ public class Letter {
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
                 .userID(dto.getUserID())
                 .letterStatus(LetterStatus.DRAFT)
+                .senderName(dto.getSenderName())
+                .receiverName(dto.getReceiverName())
                 .build();
     }
 }

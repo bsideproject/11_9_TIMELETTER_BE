@@ -3,12 +3,10 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -287,6 +285,8 @@ public class LetterService {
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
             letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
+            letter.setSenderName(entity.getSenderName());
+            letter.setReceiverName(entity.getReceiverName());
             save(letter);
         });
 

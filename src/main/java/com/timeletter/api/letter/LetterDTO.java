@@ -25,6 +25,10 @@ public class LetterDTO {
 
     private String imageId;                 // 등록된 이미지 아이디
 
+    private String senderName;              // 보내는 사람의 이름
+
+    private String receiverName;            // 받는 사람의 이름
+
     public LetterDTO(final Letter letter){
         this.id = letter.getId();
         this.title = letter.getTitle();
@@ -33,6 +37,8 @@ public class LetterDTO {
         this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
         this.userID = letter.getUserID();
         this.letterStatus = letter.getLetterStatus();
+        this.senderName = letter.getSenderName();
+        this.receivedDate = letter.getReceivedDate();
     }
 
     public static Letter toEntity(final LetterDTO dto){
@@ -43,6 +49,8 @@ public class LetterDTO {
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
                 .userID(dto.getUserID())
                 .letterStatus(dto.getLetterStatus())
+                .senderName(dto.getSenderName())
+                .receiverName(dto.getReceiverName())
                 .build();
     }
 }
