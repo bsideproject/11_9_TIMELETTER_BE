@@ -38,7 +38,7 @@ public class LetterDTO {
         this.userID = letter.getUserID();
         this.letterStatus = letter.getLetterStatus();
         this.senderName = letter.getSenderName();
-        this.receivedDate = letter.getReceivedDate();
+        this.receiverName = letter.getReceiverName();
     }
 
     public static Letter toEntity(final LetterDTO dto){
