@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -94,6 +95,37 @@ public class OAuthController {
         }catch (Exception e){
             e.printStackTrace();
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    /**
+     * 맴버로그인 콜백 callback
+     * [GET] /oauth/kakao/callback
+     */
+    @Operation(summary = "맴버 로그인", description = "코드 기반의 맴버 로그인 로직.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @ResponseBody
+    @GetMapping("/accessAPIToken")
+    public ResponseEntity<?> MemberAccessToken(@RequestParam String token) {
+        String userId = tokenProvider.validateAndGetUserID(token);
+        if(memberService.existByEmail(userId)){
+            Member member = memberService.findByEmail(userId);
+            final MemberDTO responseUserDTO = MemberDTO.builder()
+                    .email(member.getEmail())
+                    .username(member.getUsername())
+                    .id(member.getId())
+                    .token(token)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        }else{
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("login failed").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
