@@ -1,5 +1,6 @@
 package com.timeletter.api.letter;
 
+import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.image.ImageService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,8 +52,8 @@ public class LetterControllerAPI {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @GetMapping("/version2")
-    public ResponseEntity<?> retrieveLetterList2(@AuthenticationPrincipal String userId){
-        return letterService.processRetrieveLetterList2(userId);
+    public ResponseEntity<?> retrieveLetterList2(PageRequestDTO dto, @AuthenticationPrincipal String userId){
+        return letterService.processRetrieveLetterList2(dto, userId);
     }
 
 

@@ -1,8 +1,12 @@
 package com.timeletter.api.letter;
 
+import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -69,19 +73,13 @@ public class LetterService {
      * @param userId 편지 리스트 조회하고자하는 유저 아이디
      * @return 편지 리스트
      */
-    public ResponseEntity<?> processRetrieveLetterList2(String userId) {
+    public ResponseEntity<?> processRetrieveLetterList2(PageRequestDTO requestDTO,String userId) {
         try {
-            List<Object> data = new ArrayList<>();
 
-            LetterStatus.list().forEach(letterStatus -> {
-                List<Letter> allByUserIdAndLetterStatus = this.findAllByUserIdAndLetterStatus(userId, letterStatus);
-                if(allByUserIdAndLetterStatus.size()!=0){
-                    List<LetterDTO> dto = allByUserIdAndLetterStatus.stream().map(LetterDTO::new).collect(Collectors.toList());
-                    data.add(dto);
-                }
-            });
+            Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+            Page<Letter> result = letterRepository.findAll(pageable);
 
-            ResponseDTO<Object> response = ResponseDTO.<Object>builder().data(data).build();
+            ResponseDTO<Letter> response = ResponseDTO.<Letter>builder().pageData(result).build();
             return ResponseEntity.ok().body(response);
         }catch (Exception e){
             return returnBadRequest(e);
