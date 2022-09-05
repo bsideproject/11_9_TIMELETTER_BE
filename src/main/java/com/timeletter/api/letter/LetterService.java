@@ -70,14 +70,16 @@ public class LetterService {
     /**
      * 해당 유저에 해당하는 편지 리스트 조회
      *
+     *
+     * @param letterStatus
      * @param userId 편지 리스트 조회하고자하는 유저 아이디
      * @return 편지 리스트
      */
-    public ResponseEntity<?> processRetrieveLetterList2(PageRequestDTO requestDTO,String userId) {
+    public ResponseEntity<?> processRetrieveLetterList2(PageRequestDTO requestDTO, LetterStatus letterStatus, String userId) {
         try {
 
             Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-            Page<Letter> result = letterRepository.findAll(pageable);
+            Page<Letter> result = letterRepository.findAllByUserIDAndLetterStatus(userId,letterStatus, pageable);
 
             ResponseDTO<Letter> response = ResponseDTO.<Letter>builder().pageData(result).build();
             return ResponseEntity.ok().body(response);
@@ -337,11 +339,6 @@ public class LetterService {
             log.warn("Entity cannot be null.");
             throw new RuntimeException("Entity cannot be null");
         }
-    }
-
-    @Transactional
-    public List<Letter> findAllByUserIdAndLetterStatus(String id, LetterStatus status){
-        return letterRepository.findAllByUserIDAndLetterStatus(id,status);
     }
 
     @Deprecated

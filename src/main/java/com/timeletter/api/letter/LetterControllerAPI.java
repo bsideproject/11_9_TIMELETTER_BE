@@ -52,8 +52,10 @@ public class LetterControllerAPI {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @GetMapping("/version2")
-    public ResponseEntity<?> retrieveLetterList2(PageRequestDTO dto, @AuthenticationPrincipal String userId){
-        return letterService.processRetrieveLetterList2(dto, userId);
+    public ResponseEntity<?> retrieveLetterList2(PageRequestDTO pageRequestDTO,
+                                                 @RequestBody LetterDTO letterDTO,
+                                                 @AuthenticationPrincipal String userId){
+        return letterService.processRetrieveLetterList2(pageRequestDTO,letterDTO.getLetterStatus(), userId);
     }
 
 

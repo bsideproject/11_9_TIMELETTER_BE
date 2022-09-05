@@ -44,6 +44,7 @@ public class LetterDTO {
     public static Letter toEntity(final LetterDTO dto){
         return Letter.builder()
                 .id(dto.getId())
+                .title(dto.getTitle())
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())
