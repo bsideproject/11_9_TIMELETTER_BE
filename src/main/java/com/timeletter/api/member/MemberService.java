@@ -1,5 +1,6 @@
 package com.timeletter.api.member;
 
+import com.timeletter.api.letter.Letter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ public class MemberService {
         }
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
+        member.setTutorialYN(true); // 튜토리얼을 참으로 한다.
 
         return memberRepository.save(member);
     }
@@ -49,5 +51,21 @@ public class MemberService {
 
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email);
+    }
+
+    /**
+     * 편지내용을 업데이트 한다.
+     *
+     *
+     * @param userId
+     * @param memberDTO 사용자 DTO
+     * @return save 수정된 사용자
+     */
+    public Member updateTutorial(String userId, final MemberDTO memberDTO) {
+        Member byEmail = memberRepository.findByEmail(userId);
+        byEmail.setTutorialYN(memberDTO.isTutorialYN());
+        Member save = memberRepository.save(byEmail);
+
+        return save;
     }
 }

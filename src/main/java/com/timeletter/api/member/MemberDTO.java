@@ -23,4 +23,5 @@ public class MemberDTO {
     private String birthday;
     private String birthyear;       // 출생연도
     private String phoneNumber;
+    private boolean tutorialYN;     // 튜토리얼을 진행할 것인지 확인
 }

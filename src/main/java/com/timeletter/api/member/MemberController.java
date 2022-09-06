@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -70,6 +71,33 @@ public class MemberController {
                     .username(member.getUsername())
                     .id(member.getId())
                     .token(token)
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        }else{
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("login failed").build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @Operation(summary = "튜토리얼 업데이트", description = "튜토리얼의 설명을 들을것인지 확인해보자")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+    })
+    @PutMapping("/tutorial")
+    public ResponseEntity<?> updateTutorial(@AuthenticationPrincipal String userId,
+                                            @RequestBody MemberDTO memberDTO){
+        Member member = memberService.findByEmail(userId);
+        if(member != null){
+            final Member updateTutorial = memberService.updateTutorial(userId,memberDTO);
+            final MemberDTO responseUserDTO = MemberDTO.builder()
+                    .email(updateTutorial.getEmail())
+                    .tutorialYN(updateTutorial.isTutorialYN())
+                    .username(updateTutorial.getUsername())
+                    .id(updateTutorial.getId())
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         }else{

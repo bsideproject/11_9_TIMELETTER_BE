@@ -41,4 +41,6 @@ public class Member {
 
     private String phoneNumber;
 
+    private boolean tutorialYN;
+
 }
