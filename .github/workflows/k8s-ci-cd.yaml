@@ -1,0 +1,86 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '.gitignore'
+      - '.dockerignore'
+      - 'README.md'
+  pull_request:
+    types:
+      - closed
+    branches: [ "develop", "main", "master"]
+
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set var
+        id: set-var
+        run: |
+          echo ::set-output name=IMAGE_TAG::$(cat VERSION)
+
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: make application-prod.yml
+        run: |
+          cd src/main
+          mkdir resources
+          touch ./application-prod.yml
+          echo "${{ secrets.PROPERTIES_PROD }}" > ./application-prod.yml
+        shell: bash
+
+      - name: Build with Gradle
+        run: chmod +x gradlew
+      
+      - name: build
+        run: ./gradlew clean build -x test
+
+      - name: Docker Image Build
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker images -a
+          docker tag ${{ secrets.DOCKER_IMAGE_NAME }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ steps.set-var.outputs.IMAGE_TAG }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ steps.set-var.outputs.IMAGE_TAG }}
+    
+
+
+  cd:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Target Repository
+        uses: actions/checkout@v2
+        with:
+          repository: bsideproject/11_9_TIMELETTER_K8S
+          path: 11_9_TIMELETTER_K8S
+
+      - name: Replace image tag in helm values (LOCAL)
+        uses: mikefarah/yq@master
+        env:
+          IMAGE_TAG: ${{needs.ci.outputs.IMAGE_TAG}}
+        with:
+          cmd: yq eval -i '.image.tag = env(IMAGE_TAG)' '11_9_TIMELETTER_K8S/timeletter-be/values-prod.yaml'
+
+      - name: Push helm repo
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          IMAGE_TAG: ${{needs.ci.outputs.IMAGE_TAG}}
+        run: |
+          cd deploy-k8s
+          git config --global user.email "minhan_a@naver.com"
+          git config --global user.name "minhan"
+          git add timeletter-be/values.yaml timeletter-be/values-prod.yaml;
+          git commit --message "Update timeletter-be image tag to $IMAGE_TAG";
+          git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | xargs -L1 git config --unset-all
+          git push --prune https://token:$token@github.com/bsideproject/11_9_TIMELETTER_K8S.git
