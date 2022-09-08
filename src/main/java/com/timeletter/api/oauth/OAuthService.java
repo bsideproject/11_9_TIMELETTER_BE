@@ -114,16 +114,19 @@ public class OAuthService{
                 email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
             }
             String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+            String phone_number = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("phone_number").getAsString();
 
             System.out.println("id : " + id);
             System.out.println("email : " + email);
             System.out.println("nickname = " + nickname);
+            System.out.println("phone_number = " + phone_number);
 
             Member member = Member.builder()
                     .id(id)
                     .email(email)
                     .password("kakaoUser")
                     .username(nickname)
+                    .phoneNumber(phone_number)
                     .build();
 
             br.close();
