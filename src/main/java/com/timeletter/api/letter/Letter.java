@@ -21,7 +21,7 @@ public class Letter {
     @Column(name = "letter_id")
     private String id;
 
-    private String title;                   // 편지 제목
+    //private String title;                   // 편지 제목
     private String content;                 // 편지 내용
     private LocalDateTime receivedDate;     // 받을 날짜 지정
     private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
@@ -38,7 +38,7 @@ public class Letter {
     public static Letter toEntity(final LetterDTO dto) {
         return Letter.builder()
                 .id(dto.getId())
-                .title(dto.getTitle())
+                //.title(dto.getTitle())
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())

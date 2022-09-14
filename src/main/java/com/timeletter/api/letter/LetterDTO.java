@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class LetterDTO {
     private String id;
-    private String title;                   // 편지 제목
+    // private String title;                   // 편지 제목
     private String content;                 // 편지 내용
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -31,7 +31,7 @@ public class LetterDTO {
 
     public LetterDTO(final Letter letter){
         this.id = letter.getId();
-        this.title = letter.getTitle();
+        //this.title = letter.getTitle();
         this.content = letter.getContent();
         this.receivedDate = letter.getReceivedDate();
         this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
@@ -44,7 +44,7 @@ public class LetterDTO {
     public static Letter toEntity(final LetterDTO dto){
         return Letter.builder()
                 .id(dto.getId())
-                .title(dto.getTitle())
+                //.title(dto.getTitle())
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
                 .receivedPhoneNumber(dto.getReceivedPhoneNumber())

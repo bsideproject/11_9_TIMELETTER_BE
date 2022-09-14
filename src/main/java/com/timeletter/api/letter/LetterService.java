@@ -280,7 +280,7 @@ public class LetterService {
         final Optional<Letter> original = retrieve(entity.getId());
 
         original.ifPresent(letter -> {
-            letter.setTitle(entity.getTitle());
+            //letter.setTitle(entity.getTitle());
             letter.setContent(entity.getContent());
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
