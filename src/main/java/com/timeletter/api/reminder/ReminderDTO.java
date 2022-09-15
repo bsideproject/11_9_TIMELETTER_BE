@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-// import javax.persistence.Column;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,8 +16,7 @@ public class ReminderDTO {
     private String letterId;
     private String userId;
     private String senderName;
-    private LocalDateTime sentDate;
+    private LocalDateTime sendDate;
     private String receivedPhoneNumber;
     private Boolean isSended;
-
 }

@@ -46,7 +46,8 @@ public class ReminderControllerAPI {
         if (letter.isPresent()) {
             Reminder reminder = Reminder.builder().letterId(letterId).userId(userId)
                     .senderName(letter.get().getSenderName())
-                    .sentDate(letter.get().getReceivedDate()).receivedPhoneNumber(letter.get().getReceivedPhoneNumber())
+                    .sendDate(letter.get().getReceivedDate())
+                    //.receivedPhoneNumber(letter.get().getReceivedPhoneNumber())
                     .build();
             // sentDate 에 넣을 letter created 필요함
 
@@ -57,6 +58,5 @@ public class ReminderControllerAPI {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
-
     }
 }

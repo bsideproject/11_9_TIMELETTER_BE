@@ -4,6 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReminderRepository extends JpaRepository<Reminder, String> {
 
-    Boolean existByLetterIdAndUserId(String letterId, String userId);
-
+    boolean existsByLetterIdAndUserId(String letterId, String userId);
 }

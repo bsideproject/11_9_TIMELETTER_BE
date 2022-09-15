@@ -32,7 +32,7 @@ public class Reminder {
 
     private String senderName;
 
-    private LocalDateTime sentDate;
+    private LocalDateTime sendDate;
 
     private String receivedPhoneNumber;
 
