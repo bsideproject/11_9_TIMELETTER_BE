@@ -79,10 +79,11 @@ public class LetterService {
         try {
 
             Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-            Page<Letter> result = letterRepository.findAllByUserIDAndLetterStatus(userId,letterStatus, pageable);
+            Page<Letter> data = letterRepository.findAllByUserIDAndLetterStatus(userId,letterStatus, pageable);
 
-            ResponseDTO<Letter> response = ResponseDTO.<Letter>builder().pageData(result).build();
-            return ResponseEntity.ok().body(response);
+//            ResponseDTO<Letter> response = ResponseDTO.<Letter>builder().pageData(data).build();
+//            return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok().body(data);
         }catch (Exception e){
             return returnBadRequest(e);
         }
@@ -284,7 +285,7 @@ public class LetterService {
             letter.setContent(entity.getContent());
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
-            letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
+            //letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
             letter.setSenderName(entity.getSenderName());
             letter.setReceiverName(entity.getReceiverName());
             save(letter);
@@ -305,7 +306,7 @@ public class LetterService {
         final Optional<Letter> original = retrieve(entity.getId());
 
         original.ifPresent(letter -> {
-            letter.setReceivedPhoneNumber(newPhoneNumber);
+            //letter.setReceivedPhoneNumber(newPhoneNumber);
             save(letter);
         });
 
@@ -318,8 +319,9 @@ public class LetterService {
     }
 
     private ResponseEntity<?> returnOkRequest(List<LetterDTO> data) {
-        ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
-        return ResponseEntity.ok().body(response);
+//        ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
+//        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(data);
     }
 
     private boolean isSubmit(Letter letterEntity) {

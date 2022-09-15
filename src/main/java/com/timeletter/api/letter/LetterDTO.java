@@ -17,7 +17,10 @@ public class LetterDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime receivedDate;     // 받을 날짜 지정
-    private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
+    //private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime createdAt;               // 생성 시간 지정
 
     private String userID;                  // 사용자 ID - 누가 작성했는지 알려준다.
 
@@ -34,7 +37,8 @@ public class LetterDTO {
         //this.title = letter.getTitle();
         this.content = letter.getContent();
         this.receivedDate = letter.getReceivedDate();
-        this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
+        //this.receivedPhoneNumber = letter.getReceivedPhoneNumber();
+        this.createdAt = letter.getCreatedAt();
         this.userID = letter.getUserID();
         this.letterStatus = letter.getLetterStatus();
         this.senderName = letter.getSenderName();
@@ -47,7 +51,8 @@ public class LetterDTO {
                 //.title(dto.getTitle())
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
-                .receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                //.receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                .createdAt(dto.getCreatedAt())
                 .userID(dto.getUserID())
                 .letterStatus(dto.getLetterStatus())
                 .senderName(dto.getSenderName())

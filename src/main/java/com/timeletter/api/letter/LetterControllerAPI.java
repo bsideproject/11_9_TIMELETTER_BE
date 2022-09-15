@@ -130,9 +130,11 @@ public class LetterControllerAPI {
             @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
+    @Deprecated
     @PutMapping("/updateReceiver")
     public ResponseEntity<?> updateLetterReceiver(@RequestBody LetterDTO dto){
-        return letterService.processUpdateLetterReceiver(dto.getId(),dto.getReceivedPhoneNumber());
+        return ResponseEntity.ok().body(dto);
+        //return letterService.processUpdateLetterReceiver(dto.getId(),dto.getReceivedPhoneNumber());
     }
 
 

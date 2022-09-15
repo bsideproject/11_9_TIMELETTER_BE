@@ -21,10 +21,11 @@ public class Letter {
     @Column(name = "letter_id")
     private String id;
 
-    //private String title;                   // 편지 제목
+    //private String title;                 // 편지 제목
     private String content;                 // 편지 내용
     private LocalDateTime receivedDate;     // 받을 날짜 지정
-    private String receivedPhoneNumber;     // 받을 사람 휴대폰 번호 지정
+    //private String receivedPhoneNumber;   // 받을 사람 휴대폰 번호 지정
+    private LocalDateTime createdAt;        // 생성 시간 지정
 
     private String userID;                  // 사용자 ID
 
@@ -41,7 +42,8 @@ public class Letter {
                 //.title(dto.getTitle())
                 .content(dto.getContent())
                 .receivedDate(dto.getReceivedDate())
-                .receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                //.receivedPhoneNumber(dto.getReceivedPhoneNumber())
+                .createdAt(LocalDateTime.now())
                 .userID(dto.getUserID())
                 .letterStatus(LetterStatus.DRAFT)
                 .senderName(dto.getSenderName())
