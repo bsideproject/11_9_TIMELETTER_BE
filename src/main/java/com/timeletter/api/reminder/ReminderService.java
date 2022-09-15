@@ -25,7 +25,8 @@ public class ReminderService {
     @Transactional
     public Reminder create(Reminder reminder) {
         validate(reminder);
-        if (reminderRepository.existByLetterIdAndUserId(reminder.getLetterId(), reminder.getUserId())) {
+
+        if (reminderRepository.existsByLetterIdAndUserId(reminder.getLetterId(), reminder.getUserId())) {
             log.warn("User already applied for a reminder {}", reminder.getUserId());
             throw new RuntimeException("User already applied for a reminder");
         }
