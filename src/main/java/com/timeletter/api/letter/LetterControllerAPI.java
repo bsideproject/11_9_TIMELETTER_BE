@@ -3,11 +3,13 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.image.ImageService;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,10 +54,12 @@ public class LetterControllerAPI {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @GetMapping("/version2")
-    public ResponseEntity<?> retrieveLetterList2(PageRequestDTO pageRequestDTO,
-                                                 @RequestBody LetterDTO letterDTO,
+    public ResponseEntity<?> retrieveLetterList2(@RequestParam("page") Integer page,
+                                                 @RequestParam("size") Integer size,
+                                                 @RequestParam("letterStatus") String letterStatus,
                                                  @AuthenticationPrincipal String userId){
-        return letterService.processRetrieveLetterList2(pageRequestDTO,letterDTO.getLetterStatus(), userId);
+        PageRequest pageRequest = PageRequest.of(page,size);
+        return letterService.processRetrieveLetterList2(pageRequest,letterStatus, userId);
     }
 
 
