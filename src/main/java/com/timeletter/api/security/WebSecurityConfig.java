@@ -29,7 +29,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure(){
         return (web -> web.ignoring().mvcMatchers(
-                "/v1/letter/**","/v1/member/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken"));
+                "/v1/letter/**","/v1/member/**","v1/reminder/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken"));
     }
 
     /**
