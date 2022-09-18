@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,9 @@ public class Letter {
     private String content;                 // 편지 내용
     private LocalDateTime receivedDate;     // 받을 날짜 지정
     //private String receivedPhoneNumber;   // 받을 사람 휴대폰 번호 지정
+
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;        // 생성 시간 지정
 
     private String userID;                  // 사용자 ID

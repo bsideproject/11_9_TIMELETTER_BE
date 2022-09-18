@@ -79,7 +79,6 @@ public class LetterService {
      */
     public ResponseEntity<?> processRetrieveLetterList2(PageRequest pageRequest, String letterStatus, String userId) {
         try {
-
             //Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
             Page<Letter> data = letterRepository.findAllByUserIDAndLetterStatus(userId,LetterStatus.valueOf(letterStatus), pageRequest);
 
