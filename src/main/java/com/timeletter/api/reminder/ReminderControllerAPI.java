@@ -5,6 +5,8 @@ import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.image.ImageService;
 import com.timeletter.api.letter.Letter;
 import com.timeletter.api.letter.LetterService;
+import com.timeletter.api.member.Member;
+import com.timeletter.api.member.MemberService;
 
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +31,7 @@ import java.util.Optional;
 public class ReminderControllerAPI {
     private final ReminderService reminderService;
     private final LetterService letterService;
+    private final MemberService memberService;
 
     @Operation(summary = "리마인더 생성", description = "리마인더 생성.")
     @ApiResponses({
@@ -42,12 +45,13 @@ public class ReminderControllerAPI {
     public ResponseEntity<?> create(@RequestParam("letterId") String letterId,
             @AuthenticationPrincipal String userId) {
 
+        Member member = memberService.findByEmail(userId);
         Optional<Letter> letter = letterService.retrieve(letterId);
         if (letter.isPresent()) {
             Reminder reminder = Reminder.builder().letterId(letterId).userId(userId)
                     .senderName(letter.get().getSenderName())
                     .sendDate(letter.get().getReceivedDate())
-                    // .receivedPhoneNumber(letter.get().getReceivedPhoneNumber())
+                    .receivedPhoneNumber(member.getPhoneNumber())
                     .build();
             // sentDate 에 넣을 letter created 필요함
 
