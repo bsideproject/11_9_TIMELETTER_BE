@@ -22,8 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-@CrossOrigin("*")
 @Slf4j
+@CrossOrigin("*")
 @Api(tags = { "Reminder Info" }, description = "리마인더 관련 API")
 @RestController
 @AllArgsConstructor

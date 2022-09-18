@@ -38,7 +38,7 @@ public class Reminder {
 
     private String receivedPhoneNumber;
 
-    @ColumnDefault("false")
+    @Column(columnDefinition = "bit default 0")
     private Boolean isSended;
 
 }
