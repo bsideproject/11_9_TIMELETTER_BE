@@ -26,8 +26,6 @@ public class LetterService {
 
     private final LetterRepository letterRepository;
 
-
-
     /**
      * 편지 내용 상세 조회
      *
@@ -35,7 +33,7 @@ public class LetterService {
      * @return ResponseEntity 응답 Entity
      */
     public ResponseEntity<?> processFindLetterById(String letterId) {
-        try{
+        try {
             Optional<Letter> byLetterId = retrieve(letterId);
 
             List<LetterDTO> data = new ArrayList<>();
@@ -44,12 +42,31 @@ public class LetterService {
             });
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
 
+    /**
+     * 편지 내용 Urlslug로 상세 조회
+     *
+     * @param urlSlug 상세조회하고자 하는 편지 urlSlug
+     * @return ResponseEntity 응답 Entity
+     */
+    public ResponseEntity<?> processFindLetterByUrlSlug(String urlSlug) {
+        try {
+            Optional<Letter> byLetterUrlSlug = findByUrlSlug(urlSlug);
 
+            List<LetterDTO> data = new ArrayList<>();
+            byLetterUrlSlug.ifPresent(letter -> {
+                data.add(new LetterDTO(letter));
+            });
+
+            return returnOkRequest(data);
+        } catch (Exception e) {
+            return returnBadRequest(e);
+        }
+    }
 
     /**
      * 해당 유저에 해당하는 편지 리스트 조회
@@ -64,7 +81,7 @@ public class LetterService {
             List<LetterDTO> data = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
@@ -74,23 +91,23 @@ public class LetterService {
      *
      *
      * @param letterStatus
-     * @param userId 편지 리스트 조회하고자하는 유저 아이디
+     * @param userId       편지 리스트 조회하고자하는 유저 아이디
      * @return 편지 리스트
      */
     public ResponseEntity<?> processRetrieveLetterList2(PageRequest pageRequest, String letterStatus, String userId) {
         try {
-            //Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-            Page<Letter> data = letterRepository.findAllByUserIDAndLetterStatus(userId,LetterStatus.valueOf(letterStatus), pageRequest);
+            // Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+            Page<Letter> data = letterRepository.findAllByUserIDAndLetterStatus(userId,
+                    LetterStatus.valueOf(letterStatus), pageRequest);
 
-//            ResponseDTO<Letter> response = ResponseDTO.<Letter>builder().pageData(data).build();
-//            return ResponseEntity.ok().body(response);
+            // ResponseDTO<Letter> response =
+            // ResponseDTO.<Letter>builder().pageData(data).build();
+            // return ResponseEntity.ok().body(response);
             return ResponseEntity.ok().body(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
-
-
 
     /**
      * 받는 사람 입장에서의 편지 상세 내용
@@ -103,10 +120,10 @@ public class LetterService {
             Optional<Letter> byLetterId = retrieve(letterId);
             List<LetterDTO> data = new ArrayList<>();
             byLetterId.ifPresent(letter -> {
-                if(isOpenTime(letter)){
+                if (isOpenTime(letter)) {
                     data.add(new LetterDTO(letter));
                 }
-                if(isNotOpenTime(letter)){
+                if (isNotOpenTime(letter)) {
                     LetterDTO letterDTO = new LetterDTO(letter);
                     letterDTO.setLetterStatus(LetterStatus.NOT_YET);
                     data.add(letterDTO);
@@ -114,33 +131,31 @@ public class LetterService {
             });
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
 
-
-
     /**
      * 편지 생성 프로세스
      *
-     * @param dto 편지 DTO
+     * @param dto    편지 DTO
      * @param userId 사용자 이메일
      * @return 생성 이후 편지 Entity
      */
     public ResponseEntity<?> processCreate(LetterDTO dto, String userId) {
-        try{
+        try {
             Letter letterEntity = Letter.toEntity(dto);
             letterEntity.setUserID(userId);
             String letterId = "";
 
             // 임시저장상태의 요청이 왔을 경우
-            if(isDraft(letterEntity)){
+            if (isDraft(letterEntity)) {
                 letterId = this.create(letterEntity);
                 log.info("편지 생성 완료");
             }
             // 저장완료, 전송완료 상태의 요청이 왔을 경우
-            if(isDone(letterEntity) || isSubmit(letterEntity)){
+            if (isDone(letterEntity) || isSubmit(letterEntity)) {
                 letterId = this.update(letterEntity);
                 log.info("편지 상태 업데이트 완료 : " + letterEntity.getLetterStatus());
             }
@@ -151,17 +166,15 @@ public class LetterService {
             });
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
 
-
-
     /**
      * 편지 수정 프로세스
      *
-     * @param dto 편지 DTO
+     * @param dto    편지 DTO
      * @param userId 사용자 이메일
      * @return 생성 이후 편지 Entity
      */
@@ -178,16 +191,15 @@ public class LetterService {
             });
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
 
-
     /**
      * 편지 수신인 전화번호를 변경하고자 한다.
      *
-     * @param letterId 수신인 편지를 수정할 편지 ID
+     * @param letterId    수신인 편지를 수정할 편지 ID
      * @param phoneNumber 변경하고자하는 전화번호
      * @return 수정된 편지 Entity
      */
@@ -195,7 +207,7 @@ public class LetterService {
         try {
             Letter entity = findByLetterId(letterId);
 
-            this.updateReceiver(entity,phoneNumber);
+            this.updateReceiver(entity, phoneNumber);
 
             List<LetterDTO> data = new ArrayList<>();
             retrieve(letterId).ifPresent(letter -> {
@@ -203,12 +215,10 @@ public class LetterService {
             });
 
             return returnOkRequest(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return returnBadRequest(e);
         }
     }
-
-
 
     /**
      * 편지 삭제 프로세스
@@ -226,13 +236,11 @@ public class LetterService {
             data.add(new LetterDTO(entity));
 
             return returnOkRequest(data);
-        }catch (Exception e){
-            log.error("Error deleting entity ", entity.getId(),e);
+        } catch (Exception e) {
+            log.error("Error deleting entity ", entity.getId(), e);
             return returnBadRequest(e);
         }
     }
-
-
 
     /**
      * 편지를 열 수 있는 시간인지 확인
@@ -260,7 +268,7 @@ public class LetterService {
      * @param entity 편지 엔티티
      * @return saveId 생성된 편지 아이디
      */
-    public String create(final Letter entity){
+    public String create(final Letter entity) {
         validate(entity);
         Letter save = save(entity);
 
@@ -282,11 +290,11 @@ public class LetterService {
         final Optional<Letter> original = retrieve(entity.getId());
 
         original.ifPresent(letter -> {
-            //letter.setTitle(entity.getTitle());
+            // letter.setTitle(entity.getTitle());
             letter.setContent(entity.getContent());
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
-            //letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
+            // letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
             letter.setSenderName(entity.getSenderName());
             letter.setReceiverName(entity.getReceiverName());
             save(letter);
@@ -301,13 +309,13 @@ public class LetterService {
      * @param entity 편지 엔티티
      * @return saveId 수정된 편지 아이디
      */
-    public String updateReceiver(final Letter entity,String newPhoneNumber) {
+    public String updateReceiver(final Letter entity, String newPhoneNumber) {
         validate(entity);
 
         final Optional<Letter> original = retrieve(entity.getId());
 
         original.ifPresent(letter -> {
-            //letter.setReceivedPhoneNumber(newPhoneNumber);
+            // letter.setReceivedPhoneNumber(newPhoneNumber);
             save(letter);
         });
 
@@ -320,8 +328,9 @@ public class LetterService {
     }
 
     private ResponseEntity<?> returnOkRequest(List<LetterDTO> data) {
-//        ResponseDTO<LetterDTO> response = ResponseDTO.<LetterDTO>builder().data(data).build();
-//        return ResponseEntity.ok().body(response);
+        // ResponseDTO<LetterDTO> response =
+        // ResponseDTO.<LetterDTO>builder().data(data).build();
+        // return ResponseEntity.ok().body(response);
         return ResponseEntity.ok().body(data);
     }
 
@@ -338,7 +347,7 @@ public class LetterService {
     }
 
     private void validate(Letter entity) {
-        if(entity == null){
+        if (entity == null) {
             log.warn("Entity cannot be null.");
             throw new RuntimeException("Entity cannot be null");
         }
@@ -356,6 +365,11 @@ public class LetterService {
     }
 
     @Transactional
+    public Optional<Letter> findByUrlSlug(String urlSlug) {
+        return letterRepository.findByUrlSlug(urlSlug);
+    }
+
+    @Transactional
     public List<Letter> findAllByUserId(String userId) {
         return letterRepository.findAllByUserID(userId);
     }
@@ -363,19 +377,17 @@ public class LetterService {
     @Transactional
     public Letter findByLetterId(String letterId) {
         return letterRepository.findById(letterId).orElseThrow(
-                () -> new IllegalArgumentException(String.format("아이디 : {} 에 해당하는 편지 Entity가 존재하지 않습니다.", letterId))
-        );
+                () -> new IllegalArgumentException(String.format("아이디 : {} 에 해당하는 편지 Entity가 존재하지 않습니다.", letterId)));
     }
 
     @Transactional
-    public Letter save(Letter letter){
+    public Letter save(Letter letter) {
         return letterRepository.save(letter);
     }
 
     @Transactional
-    public void delete(Letter letter){
+    public void delete(Letter letter) {
         letterRepository.delete(letter);
     }
-
 
 }

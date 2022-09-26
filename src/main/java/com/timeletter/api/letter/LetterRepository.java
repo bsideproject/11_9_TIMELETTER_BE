@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface LetterRepository extends JpaRepository<Letter,String> {
+public interface LetterRepository extends JpaRepository<Letter, String> {
     List<Letter> findAllByUserID(String userId);
+
+    Optional<Letter> findByUrlSlug(String urlSlug);
+
     Page<Letter> findAllByUserIDAndLetterStatus(String userID, LetterStatus letterStatus, Pageable pageable);
 }
