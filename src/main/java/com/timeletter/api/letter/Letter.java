@@ -23,9 +23,6 @@ public class Letter {
     @Column(name = "letter_id")
     private String id;
 
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
     private String urlSlug;
 
     // private String title; // 편지 제목
