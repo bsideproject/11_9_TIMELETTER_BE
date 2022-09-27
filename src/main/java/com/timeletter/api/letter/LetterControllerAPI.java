@@ -154,7 +154,7 @@ public class LetterControllerAPI {
         }
 
         @CrossOrigin(origins = "*", allowedHeaders = "*")
-        @Operation(summary = "이미지 업로드", description = "편지에 이미지를 업로드합니.")
+        @Operation(summary = "이미지 업로드", description = "편지에 이미지를 업로드합니다.")
         @ApiResponses({
                         @ApiResponse(responseCode = "200", description = "OK !!"),
                         @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
