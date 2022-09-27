@@ -32,6 +32,8 @@ public class Reminder {
     @Column(nullable = false)
     private String userId;
 
+    private String urlSlug;
+
     private String senderName;
 
     private LocalDateTime sendDate;

@@ -51,6 +51,7 @@ public class ReminderControllerAPI {
             Reminder reminder = Reminder.builder().letterId(letterId).userId(userId)
                     .senderName(letter.get().getSenderName())
                     .sendDate(letter.get().getReceivedDate())
+                    .urlSlug(letter.get().getUrlSlug())
                     .receivedPhoneNumber(member.getPhoneNumber())
                     .build();
             // sentDate 에 넣을 letter created 필요함

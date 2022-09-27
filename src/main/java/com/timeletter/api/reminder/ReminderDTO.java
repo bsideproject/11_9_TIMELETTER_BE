@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ReminderDTO {
     private String reminderId;
     private String letterId;
+    private String urlSlug;
     private String userId;
     private String senderName;
     private LocalDateTime sendDate;
