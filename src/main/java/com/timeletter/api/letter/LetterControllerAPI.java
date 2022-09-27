@@ -153,6 +153,7 @@ public class LetterControllerAPI {
                 return letterService.processDelete(dto);
         }
 
+        @CrossOrigin(origins = "*", allowedHeaders = "*")
         @Operation(summary = "이미지 업로드", description = "편지에 이미지를 업로드합니.")
         @ApiResponses({
                         @ApiResponse(responseCode = "200", description = "OK !!"),
