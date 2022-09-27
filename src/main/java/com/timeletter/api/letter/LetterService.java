@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -147,6 +148,18 @@ public class LetterService {
         try {
             Letter letterEntity = Letter.toEntity(dto);
             letterEntity.setUserID(userId);
+
+            int leftLimit = 48; // numeral '0'
+            int rightLimit = 122; // letter 'z'
+            int targetStringLength = 20;
+            Random random = new Random();
+            String generatedString = random.ints(leftLimit, rightLimit + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(targetStringLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+
+            letterEntity.setUrlSlug(generatedString);
             String letterId = "";
 
             // 임시저장상태의 요청이 왔을 경우
