@@ -26,6 +26,7 @@ public class Letter {
     private String urlSlug;
 
     // private String title; // 편지 제목
+    @Column(columnDefinition = "TEXT")
     private String content; // 편지 내용
     private LocalDateTime receivedDate; // 받을 날짜 지정
     // private String receivedPhoneNumber; // 받을 사람 휴대폰 번호 지정
