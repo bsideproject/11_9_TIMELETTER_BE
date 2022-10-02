@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,8 +36,8 @@ public class LetterControllerAPI {
                         @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
                         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
         })
-        @GetMapping("/status/{urlSlug}")
-        public ResponseEntity<?> modifyLetterStatus(@PathVariable("urlSlug") String urlSlug) {
+        @GetMapping("/status")
+        public ResponseEntity<?> modifyLetterStatus(@RequestParam("urlSlug") String urlSlug) {
                 return letterService.processUpdateLetterStatus(urlSlug);
         }
 
