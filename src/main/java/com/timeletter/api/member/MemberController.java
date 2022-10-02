@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
-@Api(tags = {"Member Info"}, description = "사용자 로그인 및 회원가입 제공" )
+@Api(tags = { "Member Info" }, description = "사용자 로그인 및 회원가입 제공")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody MemberDTO memberDTO){
+    public ResponseEntity<?> registerUser(@RequestBody MemberDTO memberDTO) {
         try {
             Member member = Member.builder().email(memberDTO.getEmail())
                     .username(memberDTO.getUsername())
@@ -47,7 +47,7 @@ public class MemberController {
                     .id(registeredUser.getId()).build();
 
             return ResponseEntity.ok().body(responseUserDTO);
-        }catch (Exception e){
+        } catch (Exception e) {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
@@ -62,9 +62,9 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO){
+    public ResponseEntity<?> authenticate(@RequestBody MemberDTO memberDTO) {
         Member member = memberService.getByCredentials(memberDTO.getEmail(), memberDTO.getPassword());
-        if(member != null){
+        if (member != null) {
             final String token = tokenProvider.create(member);
             final MemberDTO responseUserDTO = MemberDTO.builder()
                     .email(member.getEmail())
@@ -73,7 +73,7 @@ public class MemberController {
                     .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
-        }else{
+        } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("login failed").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
@@ -89,10 +89,10 @@ public class MemberController {
     })
     @PutMapping("/tutorial")
     public ResponseEntity<?> updateTutorial(@AuthenticationPrincipal String userId,
-                                            @RequestBody MemberDTO memberDTO){
+            @RequestBody MemberDTO memberDTO) {
         Member member = memberService.findByEmail(userId);
-        if(member != null){
-            final Member updateTutorial = memberService.updateTutorial(userId,memberDTO);
+        if (member != null) {
+            final Member updateTutorial = memberService.updateTutorial(userId, memberDTO);
             final MemberDTO responseUserDTO = MemberDTO.builder()
                     .email(updateTutorial.getEmail())
                     .tutorialYN(updateTutorial.isTutorialYN())
@@ -100,7 +100,7 @@ public class MemberController {
                     .id(updateTutorial.getId())
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
-        }else{
+        } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("login failed").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }

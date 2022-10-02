@@ -90,7 +90,7 @@ public class OAuthController {
                     .id(member.getId())
                     .username(member.getUsername())
                     .phoneNumber(member.getPhoneNumber())
-                    .tutorialYN(member.isTutorialYN())
+                    .tutorialYN(byEmailAndPassword.isTutorialYN())
                     .token(loginToken)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
