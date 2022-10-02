@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @Slf4j
-@Api(tags = {"Kakao Login"}, description = "카카오 로그인")
+@Api(tags = { "Kakao Login" }, description = "카카오 로그인")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
@@ -49,12 +49,13 @@ public class OAuthController {
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
+
     /**
      * 카카오 callback
      * [GET] /oauth/kakao/callback
@@ -75,9 +76,10 @@ public class OAuthController {
             Member member = oAuthService.createKakaoUser(token);
 
             // 백엔드 서버에 해당 정보가 존재하는지 확인
-            if(!memberService.existByEmail(member.getEmail())){
+            if (!memberService.existByEmail(member.getEmail())) {
                 log.info("kakao 회원가입 로직 시작");
-                Member newKakaoUser = Member.builder().email(member.getEmail()).password(member.getId()).username(member.getUsername()).phoneNumber(member.getPhoneNumber()).build();
+                Member newKakaoUser = Member.builder().email(member.getEmail()).password(member.getId())
+                        .username(member.getUsername()).phoneNumber(member.getPhoneNumber()).build();
                 memberService.create(newKakaoUser);
                 log.info("kakao 회원가입 로직 완료");
             }
@@ -88,11 +90,12 @@ public class OAuthController {
                     .id(member.getId())
                     .username(member.getUsername())
                     .phoneNumber(member.getPhoneNumber())
+                    .tutorialYN(member.isTutorialYN())
                     .token(loginToken)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
             return ResponseEntity.badRequest().body(responseDTO);
