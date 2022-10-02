@@ -28,6 +28,48 @@ public class LetterService {
     private final LetterRepository letterRepository;
 
     /**
+     * 임시로 편지 상태 변경하고자 만듬
+     *
+     * @param letterId 수신인 편지를 수정할 편지 ID
+     * @return 수정된 편지 Entity
+     */
+    public ResponseEntity<?> processUpdateLetterStatus(String letterId) {
+        try {
+            Letter entity = findByLetterId(letterId);
+
+            this.updateStatus(entity);
+
+            List<LetterDTO> data = new ArrayList<>();
+            retrieve(letterId).ifPresent(letter -> {
+                data.add(new LetterDTO(letter));
+            });
+
+            return returnOkRequest(data);
+        } catch (Exception e) {
+            return returnBadRequest(e);
+        }
+    }
+
+    /**
+     * 편지 상태를 변경시킨다
+     *
+     * @param entity 편지 엔티티
+     * @return saveId 수정된 편지 아이디
+     */
+    public String updateStatus(final Letter entity) {
+        validate(entity);
+
+        final Optional<Letter> original = retrieve(entity.getId());
+
+        original.ifPresent(letter -> {
+            letter.setLetterStatus(LetterStatus.DONE);
+            save(letter);
+        });
+
+        return entity.getId();
+    }
+
+    /**
      * 편지 내용 상세 조회
      *
      * @param letterId 상세조회하고자 하는 편지 아이디

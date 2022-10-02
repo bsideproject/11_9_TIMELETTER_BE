@@ -27,6 +27,19 @@ public class LetterControllerAPI {
         private final LetterService letterService;
         private final ImageService imageService;
 
+        @Operation(summary = "임시 편지 상태 변경", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "OK !!"),
+                        @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+                        @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+                        @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+                        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+        })
+        @GetMapping("/status/{id}")
+        public ResponseEntity<?> modifyLetterStatus(@PathVariable("id") String letterId) {
+                return letterService.processUpdateLetterStatus(letterId);
+        }
+
         @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
         @ApiResponses({
                         @ApiResponse(responseCode = "200", description = "OK !!"),
