@@ -35,9 +35,9 @@ public class LetterControllerAPI {
                         @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
                         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
         })
-        @GetMapping("/status/{id}")
-        public ResponseEntity<?> modifyLetterStatus(@PathVariable("id") String letterId) {
-                return letterService.processUpdateLetterStatus(letterId);
+        @GetMapping("/status/{urlSlug}")
+        public ResponseEntity<?> modifyLetterStatus(@PathVariable("urlSlug") String urlSlug) {
+                return letterService.processUpdateLetterStatus(urlSlug);
         }
 
         @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
