@@ -15,7 +15,7 @@ public class LetterDTO {
     // private String title; // 편지 제목
     private String content; // 편지 내용
 
-    private String urlSlug;
+    private byte[] urlSlug;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime receivedDate; // 받을 날짜 지정
