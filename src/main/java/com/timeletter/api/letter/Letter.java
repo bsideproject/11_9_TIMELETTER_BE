@@ -1,5 +1,6 @@
 package com.timeletter.api.letter;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,11 +27,15 @@ public class Letter {
     private String urlSlug;
 
     // private String title; // 편지 제목
+    @Column(columnDefinition = "TEXT")
     private String content; // 편지 내용
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime receivedDate; // 받을 날짜 지정
     // private String receivedPhoneNumber; // 받을 사람 휴대폰 번호 지정
 
     @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt; // 생성 시간 지정
 

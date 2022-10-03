@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +27,19 @@ public class LetterControllerAPI {
 
         private final LetterService letterService;
         private final ImageService imageService;
+
+        @Operation(summary = "임시 편지 상태 변경", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "OK !!"),
+                        @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
+                        @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
+                        @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
+                        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
+        })
+        @GetMapping("/status")
+        public ResponseEntity<?> modifyLetterStatus(@RequestParam("urlSlug") String urlSlug) {
+                return letterService.processUpdateLetterStatus(urlSlug);
+        }
 
         @Operation(summary = "편지 리스트 조회", description = "회원이 보유한 편지 리스트 전체를 조회합니다.")
         @ApiResponses({

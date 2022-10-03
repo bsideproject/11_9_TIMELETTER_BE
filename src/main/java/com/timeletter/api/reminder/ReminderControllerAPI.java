@@ -58,7 +58,6 @@ public class ReminderControllerAPI {
 
             Reminder returnReminder = reminderService.create(reminder);
             return ResponseEntity.ok().body(returnReminder);
-
         } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
             return ResponseEntity.badRequest().body(responseDTO);

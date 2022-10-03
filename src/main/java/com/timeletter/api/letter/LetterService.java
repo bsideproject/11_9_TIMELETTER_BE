@@ -28,6 +28,28 @@ public class LetterService {
     private final LetterRepository letterRepository;
 
     /**
+     * 임시로 편지 상태 변경하고자 만듬
+     *
+     * @param letterId 수신인 편지를 수정할 편지 ID
+     * @return 수정된 편지 Entity
+     */
+    public ResponseEntity<?> processUpdateLetterStatus(String urlSlug) {
+        try {
+            Optional<Letter> byLetterUrlSlug = findByUrlSlug(urlSlug);
+            List<LetterDTO> data = new ArrayList<>();
+            byLetterUrlSlug.ifPresent(letter -> {
+                letter.setLetterStatus(LetterStatus.DONE);
+                save(letter);
+                data.add(new LetterDTO(letter));
+            });
+
+            return returnOkRequest(data);
+        } catch (Exception e) {
+            return returnBadRequest(e);
+        }
+    }
+
+    /**
      * 편지 내용 상세 조회
      *
      * @param letterId 상세조회하고자 하는 편지 아이디
@@ -151,7 +173,7 @@ public class LetterService {
 
             int leftLimit = 48; // numeral '0'
             int rightLimit = 122; // letter 'z'
-            int targetStringLength = 20;
+            int targetStringLength = 32;
             Random random = new Random();
             String generatedString = random.ints(leftLimit, rightLimit + 1)
                     .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
