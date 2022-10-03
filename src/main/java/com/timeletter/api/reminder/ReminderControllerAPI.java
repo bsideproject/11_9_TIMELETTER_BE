@@ -1,7 +1,6 @@
 package com.timeletter.api.reminder;
 
 import com.timeletter.api.dto.ResponseDTO;
-import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.image.ImageService;
 import com.timeletter.api.letter.Letter;
 import com.timeletter.api.letter.LetterService;

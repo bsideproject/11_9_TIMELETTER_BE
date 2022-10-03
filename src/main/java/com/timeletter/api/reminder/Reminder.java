@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
@@ -32,7 +33,8 @@ public class Reminder {
     @Column(nullable = false)
     private String userId;
 
-    private String urlSlug;
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] urlSlug;
 
     private String senderName;
 

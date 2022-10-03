@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,8 +182,9 @@ public class LetterService {
                     .limit(targetStringLength)
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
+            byte[] bytes = generatedString.getBytes(StandardCharsets.UTF_8);
 
-            letterEntity.setUrlSlug(generatedString);
+            letterEntity.setUrlSlug(bytes);
             String letterId = "";
 
             // 임시저장상태의 요청이 왔을 경우
