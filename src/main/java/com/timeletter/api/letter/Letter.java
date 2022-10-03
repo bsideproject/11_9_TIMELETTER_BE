@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -23,7 +24,8 @@ public class Letter {
     @Column(name = "letter_id")
     private String id;
 
-    private String urlSlug;
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] urlSlug;
 
     // private String title; // 편지 제목
     @Column(columnDefinition = "TEXT")
