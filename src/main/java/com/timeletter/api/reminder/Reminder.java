@@ -40,7 +40,6 @@ public class Reminder {
 
     private String receivedPhoneNumber;
 
-    @Column(columnDefinition = "bit default 0")
     private Boolean isSended;
 
 }
