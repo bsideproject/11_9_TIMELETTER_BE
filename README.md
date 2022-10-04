@@ -2,6 +2,10 @@
 
 Time letter(이하 TL)는 느린 우체통을 모티브로 한 서비스입니다.
 
+## 서비스 소개 페이지
+
+[서비스 소개 바로가기](https://timeletter.notion.site/timeletter/98b4fa790e0f4563a08189679fc91d5e)
+
 ### Pre Image
 
 ![image](https://user-images.githubusercontent.com/26649731/186671901-8cb50560-3555-4a83-9565-0f767c2105f9.png)

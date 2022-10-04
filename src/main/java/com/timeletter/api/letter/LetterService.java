@@ -30,7 +30,7 @@ public class LetterService {
     /**
      * 임시로 편지 상태 변경하고자 만듬
      *
-     * @param letterId 수신인 편지를 수정할 편지 ID
+     * @param urlSlug 수신인 편지를 수정할 편지 ID
      * @return 수정된 편지 Entity
      */
     public ResponseEntity<?> processUpdateLetterStatus(String urlSlug) {
