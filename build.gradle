@@ -46,7 +46,8 @@ dependencies {
     // mySQL add
     runtimeOnly 'mysql:mysql-connector-java'
 
-
+    //kakao talk message
+    implementation 'net.nurigo:sdk:4.2.4'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
