@@ -29,13 +29,13 @@ public class ReminderService {
     private String apiKey;
     @Value("${solapi.secret-key}")
     private String secretKey;
-    @Value("${test.template-id}")
+    @Value("${solapi.template-id}")
     private String templateId;
-    @Value("${test.template-completed-id}")
+    @Value("${solapi.template-completed-id}")
     private String TemplateCompletedId;
-    @Value("${test.pfid}")
+    @Value("${solapi.pfid}")
     private String pfid;
-    @Value("${test.send-phone-number}")
+    @Value("${solapi.send-phone-number}")
     private String sendPhoneNumber;
 
     private final ReminderRepository reminderRepository;
