@@ -38,8 +38,6 @@ public class ReminderService {
     @Value("${solapi.send-phone-number}")
     private String SEND_PHONE_NUMBER;
 
-    DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY, "https://api.solapi.com");
-
     private final ReminderRepository reminderRepository;
 
     public Reminder create(Reminder reminder) {
@@ -53,19 +51,13 @@ public class ReminderService {
     }
 
     public boolean sendReminderComplated(Reminder reminder) {
+        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY,
+                "https://api.solapi.com");
 
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
         // CharSequence cs = reminder.getReceiveDate().toString();
         // LocalDateTime letterOpendate = LocalDateTime.parse(cs,
         // DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        log.info("API_KEY {}", API_KEY);
-        log.info("SECRET_KEY {}", SECRET_KEY);
-        log.info("TEMPLATE_ID {}", TEMPLATE_ID);
-        log.info("TEMPLATE_COMPLETED_ID {}", TEMPLATE_COMPLETED_ID);
-        log.info("PFID {}", PFID);
-        log.info("SEND_PHONE_NUMBER {}", SEND_PHONE_NUMBER);
-        log.info("splitNumer {}", "010" + splitNumer[1] + splitNumer[2]);
 
         KakaoOption kakaoOption = new KakaoOption();
         kakaoOption.setPfId(PFID);
@@ -96,6 +88,8 @@ public class ReminderService {
     }
 
     public boolean sendReminder(Reminder reminder) {
+        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY,
+                "https://api.solapi.com");
 
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
 
