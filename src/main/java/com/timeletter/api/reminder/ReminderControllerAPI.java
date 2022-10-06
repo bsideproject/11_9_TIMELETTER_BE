@@ -50,37 +50,21 @@ public class ReminderControllerAPI {
         if (letter.isPresent()) {
             Reminder reminder = Reminder.builder().letterId(letterId).userId(userId)
                     .senderName(letter.get().getSenderName())
-                    .sendDate(letter.get().getReceivedDate())
+                    .sendDate(letter.get().getCreatedAt())
+                    .receiveDate(letter.get().getReceivedDate())
                     .urlSlug(letter.get().getUrlSlug())
-                    .isSended(false)
-                    .receivedPhoneNumber(member.getPhoneNumber())
+                    .recipientName(member.getUsername())
+                    .recipientPhoneNumber(member.getPhoneNumber())
                     .build();
             // sentDate 에 넣을 letter created 필요함
 
             Reminder returnReminder = reminderService.create(reminder);
+            reminderService.sendReminderComplated(reminder);
+            reminderService.sendReminder(reminder);
             return ResponseEntity.ok().body(returnReminder);
         } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
             return ResponseEntity.badRequest().body(responseDTO);
-        }
-    }
-
-    @Operation(summary = "리마인더 보내기", description = "리마인더 보내기")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
-            @ApiResponse(responseCode = "403", description = "FORBIDDEN !!"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
-    })
-    @GetMapping("/send")
-    public boolean sendReminder(@AuthenticationPrincipal String userId) {
-        Member member = memberService.findByEmail(userId);
-        if (member != null) {
-            reminderService.sendReminderComplated(member);
-            return true;
-        } else {
-            return false;
         }
     }
 

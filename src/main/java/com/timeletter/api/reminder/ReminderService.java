@@ -11,17 +11,14 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.timeletter.api.letter.Letter;
-import com.timeletter.api.letter.LetterRepository;
-import com.timeletter.api.member.Member;
-
 import javax.transaction.Transactional;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -55,27 +52,67 @@ public class ReminderService {
 
     DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, secretKey, "https:// api.solapi.com");
 
-    public boolean sendReminderComplated(Member member) {
+    public boolean sendReminderComplated(Reminder reminder) {
 
-        String[] splitNumer = "82 10-5607-3471".split("-");
+        String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
+        // CharSequence cs = reminder.getReceiveDate().toString();
+        // LocalDateTime letterOpendate = LocalDateTime.parse(cs,
+        // DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        KakaoOption kakaoOption = new KakaoOption();
+        kakaoOption.setPfId(pfid);
+        kakaoOption.setTemplateId(TemplateCompletedId);
+
+        HashMap<String, String> variables = new HashMap<>();
+        variables.put("#{send_name}", reminder.getSenderName());
+        variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+        kakaoOption.setVariables(variables);
+
+        Message message = new Message();
+        message.setFrom(sendPhoneNumber);
+        message.setTo("010" + splitNumer[1] + splitNumer[2]);
+        message.setKakaoOptions(kakaoOption);
+
+        try {
+            // send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
+            messageService.send(message);
+        } catch (NurigoMessageNotReceivedException exception) {
+            // 발송에 실패한 메시지 목록을 확인할 수 있습니다!
+            System.out.println(exception.getFailedMessageList());
+            System.out.println(exception.getMessage());
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+
+        return true;
+    }
+
+    public boolean sendReminder(Reminder reminder) {
+
+        String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
 
         KakaoOption kakaoOption = new KakaoOption();
         kakaoOption.setPfId(pfid);
         kakaoOption.setTemplateId(templateId);
 
         HashMap<String, String> variables = new HashMap<>();
-        variables.put("#{send_name}", member.getUsername());
-        variables.put("#{letter_opendate}", "010" + splitNumer[1] + splitNumer[2]);
+        variables.put("#{receive_name}", reminder.getRecipientName());
+        variables.put("#{send_name}", reminder.getSenderName());
+        variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
         kakaoOption.setVariables(variables);
 
         Message message = new Message();
         message.setFrom(sendPhoneNumber);
-        message.setTo(member.getPhoneNumber());
+        message.setTo("010" + splitNumer[1] + splitNumer[2]);
         message.setKakaoOptions(kakaoOption);
 
         try {
+            LocalDateTime localDateTime = LocalDateTime.parse(reminder.getReceiveDate().toString(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(localDateTime);
+            Instant instant = localDateTime.toInstant(zoneOffset);
             // send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
-            messageService.send(message);
+            messageService.send(message, instant);
         } catch (NurigoMessageNotReceivedException exception) {
             // 발송에 실패한 메시지 목록을 확인할 수 있습니다!
             System.out.println(exception.getFailedMessageList());

@@ -36,10 +36,12 @@ public class Reminder {
 
     private String senderName;
 
+    private String recipientName;
+
     private LocalDateTime sendDate;
 
-    private String receivedPhoneNumber;
+    private LocalDateTime receiveDate;
 
-    private Boolean isSended;
+    private String recipientPhoneNumber;
 
 }
