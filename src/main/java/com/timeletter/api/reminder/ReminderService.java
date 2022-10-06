@@ -66,6 +66,7 @@ public class ReminderService {
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{send_name}", reminder.getSenderName());
         variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+        variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
 
         Message message = new Message();
@@ -109,6 +110,7 @@ public class ReminderService {
         variables.put("#{receive_name}", reminder.getRecipientName());
         variables.put("#{send_name}", reminder.getSenderName());
         variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+        variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
 
         Message message = new Message();
