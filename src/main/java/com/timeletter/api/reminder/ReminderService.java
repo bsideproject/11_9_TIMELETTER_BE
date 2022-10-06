@@ -26,17 +26,20 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class ReminderService {
     @Value("${solapi.api-key}")
-    private String apiKey;
+    private String API_KEY;
     @Value("${solapi.secret-key}")
-    private String secretKey;
+    private String SECRET_KEY;
     @Value("${solapi.template-id}")
-    private String templateId;
+    private String TEMPLATE_ID;
     @Value("${solapi.template-completed-id}")
-    private String TemplateCompletedId;
+    private String TEMPLATE_COMPLETED_ID;
     @Value("${solapi.pfid}")
-    private String pfid;
+    private String PFID;
     @Value("${solapi.send-phone-number}")
-    private String sendPhoneNumber;
+    private String SEND_PHONE_NUMBER;
+
+    DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY,
+            "https:// api.solapi.com");
 
     private final ReminderRepository reminderRepository;
 
@@ -50,8 +53,6 @@ public class ReminderService {
         return save;
     }
 
-    DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, secretKey, "https:// api.solapi.com");
-
     public boolean sendReminderComplated(Reminder reminder) {
 
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
@@ -60,8 +61,8 @@ public class ReminderService {
         // DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         KakaoOption kakaoOption = new KakaoOption();
-        kakaoOption.setPfId(pfid);
-        kakaoOption.setTemplateId(TemplateCompletedId);
+        kakaoOption.setPfId(PFID);
+        kakaoOption.setTemplateId(TEMPLATE_COMPLETED_ID);
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{send_name}", reminder.getSenderName());
@@ -69,7 +70,7 @@ public class ReminderService {
         kakaoOption.setVariables(variables);
 
         Message message = new Message();
-        message.setFrom(sendPhoneNumber);
+        message.setFrom(SEND_PHONE_NUMBER);
         message.setTo("010" + splitNumer[1] + splitNumer[2]);
         message.setKakaoOptions(kakaoOption);
 
@@ -92,8 +93,8 @@ public class ReminderService {
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
 
         KakaoOption kakaoOption = new KakaoOption();
-        kakaoOption.setPfId(pfid);
-        kakaoOption.setTemplateId(templateId);
+        kakaoOption.setPfId(PFID);
+        kakaoOption.setTemplateId(TEMPLATE_ID);
 
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{receive_name}", reminder.getRecipientName());
@@ -102,7 +103,7 @@ public class ReminderService {
         kakaoOption.setVariables(variables);
 
         Message message = new Message();
-        message.setFrom(sendPhoneNumber);
+        message.setFrom(SEND_PHONE_NUMBER);
         message.setTo("010" + splitNumer[1] + splitNumer[2]);
         message.setKakaoOptions(kakaoOption);
 
