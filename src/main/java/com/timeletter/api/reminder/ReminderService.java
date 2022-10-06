@@ -38,8 +38,7 @@ public class ReminderService {
     @Value("${solapi.send-phone-number}")
     private String SEND_PHONE_NUMBER;
 
-    DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY,
-            "https://api.solapi.com");
+    DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY, "https://api.solapi.com");
 
     private final ReminderRepository reminderRepository;
 
