@@ -50,6 +50,13 @@ public class ReminderService {
         return save;
     }
 
+    public void isSendedValidate(String letterId, String userId) {
+        if (reminderRepository.existsByLetterIdAndUserId(letterId, userId)) {
+            log.warn("User already applied for a reminder {}", userId);
+            throw new RuntimeException("User already applied for a reminder");
+        }
+    }
+
     public boolean sendReminderComplated(Reminder reminder) {
         DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(API_KEY, SECRET_KEY,
                 "https://api.solapi.com");
