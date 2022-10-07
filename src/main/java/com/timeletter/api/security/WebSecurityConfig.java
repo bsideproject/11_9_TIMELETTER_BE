@@ -32,7 +32,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure(){
         return (web -> web.ignoring().mvcMatchers(
-                        "/v1/reminder/**","/v1/letter/**","/v1/member/**","v1/reminder/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken")
+                        "/v1/reminder","/v1/reminder/**","/v1/letter/**","/v1/member/**","v1/reminder/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken")
                 // Path resources 경로 403 에러 해결하는 코드
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
@@ -72,7 +72,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/","/v1/reminder/**","/v1/member/**","/swagger-resources/**","/oauth/**","/v2/api-docs","/swagger*/**","/v1/letter/version2**").permitAll()
+                .antMatchers("/","/v1/reminder","/v1/reminder/**","/v1/member/**","/swagger-resources/**","/oauth/**","/v2/api-docs","/swagger*/**","/v1/letter/version2**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().addFilterAfter(jwtAuthenticationFilter,CorsFilter.class)
