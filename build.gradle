@@ -46,6 +46,8 @@ dependencies {
     // mySQL add
     runtimeOnly 'mysql:mysql-connector-java'
 
+    // spring-boot-starter-thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.4'
 
 
     compileOnly 'org.projectlombok:lombok'
