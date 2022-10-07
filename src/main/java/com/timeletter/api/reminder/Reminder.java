@@ -36,11 +36,12 @@ public class Reminder {
 
     private String senderName;
 
+    private String recipientName;
+
     private LocalDateTime sendDate;
 
-    private String receivedPhoneNumber;
+    private LocalDateTime receiveDate;
 
-    @Column(columnDefinition = "bit default 0")
-    private Boolean isSended;
+    private String recipientPhoneNumber;
 
 }

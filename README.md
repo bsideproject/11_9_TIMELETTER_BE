@@ -1,6 +1,6 @@
 # Time Letter Backend API
 
-Time letter(이하 TL)는 느린 우체통을 모티브로 한 서비스입니다.
+Time letter(이하 TL)는 느린 우체통을 모티브로 한 서비스입니다..
 
 ## 서비스 소개 페이지
 

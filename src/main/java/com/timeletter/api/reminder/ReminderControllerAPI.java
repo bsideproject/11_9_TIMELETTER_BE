@@ -44,23 +44,32 @@ public class ReminderControllerAPI {
     @PostMapping
     public ResponseEntity<?> create(@RequestParam("letterId") String letterId,
             @AuthenticationPrincipal String userId) {
+        log.info("리마인더 API에 도달하였습니다.{}", letterId);
 
         Member member = memberService.findByEmail(userId);
         Optional<Letter> letter = letterService.retrieve(letterId);
         if (letter.isPresent()) {
             Reminder reminder = Reminder.builder().letterId(letterId).userId(userId)
                     .senderName(letter.get().getSenderName())
-                    .sendDate(letter.get().getReceivedDate())
+                    .sendDate(letter.get().getCreatedAt())
+                    .receiveDate(letter.get().getReceivedDate())
                     .urlSlug(letter.get().getUrlSlug())
-                    .receivedPhoneNumber(member.getPhoneNumber())
+                    .recipientName(member.getUsername())
+                    .recipientPhoneNumber(member.getPhoneNumber())
                     .build();
-            // sentDate 에 넣을 letter created 필요함
+
+            // letterId 와 userId를 넣어서, 중복 신청인지 확인후, 중복이라면 error
+            reminderService.isSendedValidate(letterId, userId);
 
             Reminder returnReminder = reminderService.create(reminder);
+            reminderService.sendReminderComplated(reminder);
+            reminderService.sendReminder(reminder);
+
             return ResponseEntity.ok().body(returnReminder);
         } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
+
 }

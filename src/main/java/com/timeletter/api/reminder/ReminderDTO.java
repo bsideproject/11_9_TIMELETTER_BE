@@ -17,7 +17,8 @@ public class ReminderDTO {
     private String urlSlug;
     private String userId;
     private String senderName;
+    private String recipientName;
     private LocalDateTime sendDate;
-    private String receivedPhoneNumber;
-    private Boolean isSended;
+    private LocalDateTime receiveDate;
+    private String recipientPhoneNumber;
 }
