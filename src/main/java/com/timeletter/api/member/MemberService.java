@@ -18,14 +18,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member create(final Member member){
+    public Member create(final Member member) {
 
-        if(member == null || member.getEmail() == null){
+        if (member == null || member.getEmail() == null) {
             throw new RuntimeException("Invalid arguments");
         }
         final String email = member.getEmail();
-        if(memberRepository.existsByEmail(email)){
-            log.warn("Eamil already exists {}",email);
+        if (memberRepository.existsByEmail(email)) {
+            log.warn("Eamil already exists {}", email);
             throw new RuntimeException("Email already exists");
         }
 
@@ -35,10 +35,10 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member getByCredentials(final String email,final String password){
+    public Member getByCredentials(final String email, final String password) {
         Member byEmail = memberRepository.findByEmail(email);
-        if(!passwordEncoder.matches(password, byEmail.getPassword())){
-            log.warn("password not matched {}",email);
+        if (!passwordEncoder.matches(password, byEmail.getPassword())) {
+            log.warn("password not matched {}", email);
             throw new RuntimeException("password not matched");
         }
 
@@ -67,5 +67,9 @@ public class MemberService {
         Member save = memberRepository.save(byEmail);
 
         return save;
+    }
+
+    public Long getMemberCount() {
+        return memberRepository.count();
     }
 }

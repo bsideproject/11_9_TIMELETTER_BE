@@ -153,4 +153,8 @@ public class ReminderService {
     public Reminder save(Reminder reminder) {
         return reminderRepository.save(reminder);
     }
+
+    public Long getReminderCount() {
+        return reminderRepository.count();
+    }
 }

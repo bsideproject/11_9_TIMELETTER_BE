@@ -15,4 +15,5 @@ public interface LetterRepository extends JpaRepository<Letter, String> {
     Optional<Letter> findByUrlSlug(String urlSlug);
 
     Page<Letter> findAllByUserIDAndLetterStatus(String userID, LetterStatus letterStatus, Pageable pageable);
+
 }
