@@ -30,9 +30,10 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public WebSecurityCustomizer configure(){
+    public WebSecurityCustomizer configure() {
         return (web -> web.ignoring().mvcMatchers(
-                        "/v1/reminder","/v1/reminder/**","/v1/letter/**","/v1/member/**","v1/reminder/**","/v3/api-docs/**","/swagger-ui/**","/oauth/kakao","/oauth/accessToken")
+                "/v1/reminder", "/v1/reminder/**", "/v1/letter/**", "/v1/member/**", "v1/reminder/**",
+                "/v3/api-docs/**", "/swagger-ui/**", "/oauth/kakao", "/oauth/accessToken", "/v1/status", "v1/status")
                 // Path resources 경로 403 에러 해결하는 코드
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
@@ -51,14 +52,15 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         /**
-         * https://velog.io/@minchae75/Spring-boot-CORS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0 참고해서 구현
+         * https://velog.io/@minchae75/Spring-boot-CORS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+         * 참고해서 구현
          */
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("https://timeletter.net"));
-            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
         });
@@ -72,10 +74,12 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/","/v1/reminder","/v1/reminder/**","/v1/member/**","/swagger-resources/**","/oauth/**","/v2/api-docs","/swagger*/**","/v1/letter/version2**").permitAll()
+                .antMatchers("/", "/v1/reminder", "/v1/reminder/**", "/v1/member/**", "/swagger-resources/**",
+                        "/oauth/**", "/v2/api-docs", "/swagger*/**", "/v1/letter/version2**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().addFilterAfter(jwtAuthenticationFilter,CorsFilter.class)
+                .and().addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
                 .build();
     }
 
