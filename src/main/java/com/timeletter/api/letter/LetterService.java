@@ -81,12 +81,13 @@ public class LetterService {
             Optional<Letter> byLetterUrlSlug = findByUrlSlug(urlSlug);
 
             List<LetterDTO> data = new ArrayList<>();
-            byLetterUrlSlug.ifPresent(letter -> {
-                // 편지 받을 날짜가 현재 시간보다 이전일 경우 = 이미 지나버린 경우 조회 가능하도록 변경
-                if (letter.getReceivedDate().isBefore(LocalDateTime.now())) {
-                    data.add(new LetterDTO(letter));
-                }
-            });
+            data.add(new LetterDTO(byLetterUrlSlug.get()));
+//            byLetterUrlSlug.ifPresent(letter -> {
+//                // 편지 받을 날짜가 현재 시간보다 이전일 경우 = 이미 지나버린 경우 조회 가능하도록 변경
+//                if (letter.getReceivedDate().isBefore(LocalDateTime.now())) {
+//                    data.add(new LetterDTO(letter));
+//                }
+//            });
 
             return returnOkRequest(data);
         } catch (Exception e) {
