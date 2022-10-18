@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -24,4 +24,5 @@ public class MemberDTO {
     private String birthyear;       // 출생연도
     private String phoneNumber;
     private boolean tutorialYN;     // 튜토리얼을 진행할 것인지 확인
+    private LocalDate regDate;
 }
