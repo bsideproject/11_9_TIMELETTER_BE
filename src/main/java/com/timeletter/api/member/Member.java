@@ -1,12 +1,15 @@
 package com.timeletter.api.member;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -42,5 +45,10 @@ public class Member {
     private String phoneNumber;
 
     private boolean tutorialYN;
+
+    @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime regDate; // 생성 시간 지정
 
 }
