@@ -76,8 +76,8 @@ public class MemberService {
     }
 
     public List<StatisticInterface> memCountGroupByDate(String stDate, String edDate) {
-        LocalDate startDate = strToLocalDateTime(stDate);
-        LocalDate endDate = strToLocalDateTime(edDate);
+        LocalDate startDate = stDate.isEmpty() ? LocalDate.now().minusWeeks(1) : strToLocalDateTime(stDate);
+        LocalDate endDate = edDate.isEmpty() ? LocalDate.now() : strToLocalDateTime(edDate);
 
         log.info("조회 시작 일 : " + startDate);
         log.info("조회 종료 일 : " + endDate);
