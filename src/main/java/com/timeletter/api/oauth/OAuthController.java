@@ -97,6 +97,7 @@ public class OAuthController {
                     .phoneNumber(member.getPhoneNumber())
                     .tutorialYN(byEmailAndPassword.isTutorialYN())
                     .token(loginToken)
+                    .regDate(member.getRegDate())
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
 
