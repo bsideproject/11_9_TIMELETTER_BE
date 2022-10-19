@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @CrossOrigin("*")
 @Api(tags = { "Member Info" }, description = "사용자 로그인 및 회원가입 제공")
 @Slf4j
@@ -37,6 +39,7 @@ public class MemberController {
             Member member = Member.builder().email(memberDTO.getEmail())
                     .username(memberDTO.getUsername())
                     .password(memberDTO.getPassword())
+                    .regDate(LocalDate.now())
                     .build();
 
             Member registeredUser = memberService.create(member);
@@ -44,6 +47,7 @@ public class MemberController {
             MemberDTO responseUserDTO = MemberDTO.builder()
                     .email(registeredUser.getEmail())
                     .username(registeredUser.getUsername())
+                    .regDate(member.getRegDate())
                     .id(registeredUser.getId()).build();
 
             return ResponseEntity.ok().body(responseUserDTO);

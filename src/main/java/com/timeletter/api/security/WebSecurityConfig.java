@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -20,6 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -32,7 +35,7 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web -> web.ignoring().mvcMatchers(
-                "/v1/reminder", "/v1/reminder/**", "/v1/letter/**", "/v1/member/**", "v1/reminder/**",
+                "/v1/reminder", "/v1/reminder/**", "/v1/letter/**", "/v1/member/**", "v1/reminder/**","/statistics/memCount**",
                 "/v3/api-docs/**", "/swagger-ui/**", "/oauth/kakao", "/oauth/accessToken", "/v1/status", "v1/status")
                 // Path resources 경로 403 에러 해결하는 코드
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
@@ -67,14 +70,24 @@ public class WebSecurityConfig {
         return http
                 .cors()
                 .and()
-                .csrf().disable()
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**")    // 여기!
+                .and()
+                .headers()
+                .addHeaderWriter(
+                        new XFrameOptionsHeaderWriter(
+                                new WhiteListedAllowFromStrategy(Arrays.asList("localhost"))
+                        )
+                )
+                .frameOptions().sameOrigin()    // 여기도 추가!!
+                .and()
                 .httpBasic()
                 .disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/v1/reminder", "/v1/reminder/**", "/v1/member/**", "/swagger-resources/**",
+                .antMatchers("/", "/v1/reminder", "/v1/reminder/**", "/v1/member/**", "/swagger-resources/**","/statistics/memCount**","/h2-console/**",
                         "/oauth/**", "/v2/api-docs", "/swagger*/**", "/v1/letter/version2**")
                 .permitAll()
                 .anyRequest()

@@ -1,13 +1,15 @@
 package com.timeletter.api.member;
 
-import com.timeletter.api.letter.Letter;
+import com.timeletter.api.statistics.StatisticInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -71,5 +73,19 @@ public class MemberService {
 
     public Long getMemberCount() {
         return memberRepository.count();
+    }
+
+    public List<StatisticInterface> memCountGroupByDate(String stDate, String edDate) {
+        LocalDate startDate = stDate.isEmpty() ? LocalDate.now().minusWeeks(1) : strToLocalDateTime(stDate);
+        LocalDate endDate = edDate.isEmpty() ? LocalDate.now() : strToLocalDateTime(edDate);
+
+        log.info("조회 시작 일 : " + startDate);
+        log.info("조회 종료 일 : " + endDate);
+
+        return memberRepository.findGroupByRegDate(startDate, endDate);
+    }
+
+    private LocalDate strToLocalDateTime(String date) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 }
