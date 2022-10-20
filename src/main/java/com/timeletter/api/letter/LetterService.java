@@ -1,23 +1,21 @@
 package com.timeletter.api.letter;
 
-import com.timeletter.api.dto.PageRequestDTO;
 import com.timeletter.api.dto.ResponseDTO;
+import com.timeletter.api.statistics.LetterStatisticInterface;
+import com.timeletter.api.statistics.StatisticInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -431,5 +429,29 @@ public class LetterService {
 
     public Long getLetterCount() {
         return letterRepository.count();
+    }
+
+    public List<String> letterCountGroupByDate(String stDate, String edDate) {
+        LocalDateTime startDate = stDate.isEmpty() ? LocalDateTime.now().minusWeeks(1) : strToLocalDateTime(stDate,LocalTime.MIN);
+        LocalDateTime endDate = edDate.isEmpty() ? LocalDateTime.now() : strToLocalDateTime(edDate,LocalTime.MAX);
+
+        log.info("조회 시작 일 : " + startDate);
+        log.info("조회 종료 일 : " + endDate);
+
+        Map<String, Long> groupByRegDate = letterRepository
+                .findGroupByRegDate(startDate, endDate)
+                .stream().map(LocalDateTime::toLocalDate)
+                .collect(Collectors.groupingBy(LocalDate::toString, Collectors.counting()));
+
+        List<String> result = new ArrayList<>();
+
+        for (LocalDate i = startDate.toLocalDate(); i.isBefore(endDate.toLocalDate()) || i.isEqual(endDate.toLocalDate()); i = i.plusDays(1)) {
+            result.add("일자 : " + i + ", 편지 발송 수 : "+groupByRegDate.getOrDefault(i.toString(),Long.parseLong("0")));
+        }
+        return result;
+    }
+
+    private LocalDateTime strToLocalDateTime(String date, LocalTime option) {
+        return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE).atTime(option);
     }
 }
