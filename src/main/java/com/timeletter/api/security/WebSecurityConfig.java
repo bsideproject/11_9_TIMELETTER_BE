@@ -88,6 +88,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/v1/reminder", "/v1/reminder/**", "/v1/member/**", "/swagger-resources/**","/statistics/memCount**","/h2-console/**",
+                        "/statistics/letterCount**",
                         "/oauth/**", "/v2/api-docs", "/swagger*/**", "/v1/letter/version2**")
                 .permitAll()
                 .anyRequest()
