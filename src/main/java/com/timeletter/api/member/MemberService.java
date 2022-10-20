@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -75,14 +76,25 @@ public class MemberService {
         return memberRepository.count();
     }
 
-    public List<StatisticInterface> memCountGroupByDate(String stDate, String edDate) {
+    public List<String> memCountGroupByDate(String stDate, String edDate) {
         LocalDate startDate = stDate.isEmpty() ? LocalDate.now().minusWeeks(1) : strToLocalDateTime(stDate);
         LocalDate endDate = edDate.isEmpty() ? LocalDate.now() : strToLocalDateTime(edDate);
 
         log.info("조회 시작 일 : " + startDate);
         log.info("조회 종료 일 : " + endDate);
 
-        return memberRepository.findGroupByRegDate(startDate, endDate);
+        List<StatisticInterface> groupByRegDate = memberRepository.findGroupByRegDate(startDate, endDate);
+        List<String> result = new ArrayList<>();
+        int idx = 0;
+        for (LocalDate i = startDate; i.isBefore(endDate) || i.isEqual(endDate); i = i.plusDays(1)) {
+            if(idx<groupByRegDate.size() && groupByRegDate.get(idx).getDate().isEqual(i)){
+                result.add("일자 : " + i + ", 가입자 수 : "+groupByRegDate.get(idx++).getCount());
+            }else{
+                result.add("일자 : " + i + ", 가입자 수 : 0");
+            }
+        }
+
+        return result;
     }
 
     private LocalDate strToLocalDateTime(String date) {

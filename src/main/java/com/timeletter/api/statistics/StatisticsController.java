@@ -18,7 +18,7 @@ public class StatisticsController {
     @GetMapping("/memCount")
     public ResponseEntity<?> memberCountGroupByDate(@RequestParam("stDate") String stDate, @RequestParam("edDate") String edDate) {
         try {
-            List<StatisticInterface> statisticInterfaces = memberService.memCountGroupByDate(stDate, edDate);
+            List<String> statisticInterfaces = memberService.memCountGroupByDate(stDate, edDate);
             return ResponseEntity.ok().body(statisticInterfaces);
         } catch (Exception e) {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
