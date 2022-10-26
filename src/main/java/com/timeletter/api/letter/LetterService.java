@@ -103,7 +103,9 @@ public class LetterService {
         try {
             List<Letter> entities = this.findAllByUserId(userId);
 
-            List<LetterDTO> data = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
+            List<LetterDTO> data = entities.stream()
+                    .sorted(Comparator.comparing(Letter::getCreatedAt).reversed())
+                    .map(LetterDTO::new).collect(Collectors.toList());
 
             return returnOkRequest(data);
         } catch (Exception e) {
