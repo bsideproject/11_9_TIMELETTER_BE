@@ -332,6 +332,7 @@ public class LetterService {
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
             // letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
+            letter.setCreatedAt(LocalDateTime.now());
             letter.setSenderName(entity.getSenderName());
             letter.setReceiverName(entity.getReceiverName());
             save(letter);
