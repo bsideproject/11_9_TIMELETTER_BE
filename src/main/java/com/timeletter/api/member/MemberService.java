@@ -35,6 +35,7 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         member.setTutorialYN(true); // 튜토리얼을 참으로 한다.
 
+        log.info("회원 가입 일자 : " + member.getRegDate());
         return memberRepository.save(member);
     }
 
