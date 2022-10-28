@@ -1,8 +1,6 @@
 package com.timeletter.api.letter;
 
 import com.timeletter.api.dto.ResponseDTO;
-import com.timeletter.api.statistics.LetterStatisticInterface;
-import com.timeletter.api.statistics.StatisticInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -103,7 +101,9 @@ public class LetterService {
         try {
             List<Letter> entities = this.findAllByUserId(userId);
 
-            List<LetterDTO> data = entities.stream().map(LetterDTO::new).collect(Collectors.toList());
+            List<LetterDTO> data = entities.stream().map(LetterDTO::new)
+                    .sorted(Comparator.comparing(LetterDTO::getCreatedAt).reversed())
+                    .collect(Collectors.toList());
 
             return returnOkRequest(data);
         } catch (Exception e) {
