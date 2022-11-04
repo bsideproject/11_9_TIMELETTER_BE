@@ -3,6 +3,7 @@ package com.timeletter.api.letter;
 import com.timeletter.api.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -74,17 +75,8 @@ public class LetterService {
      */
     public ResponseEntity<?> processFindLetterByUrlSlug(String urlSlug) {
         try {
-            Optional<Letter> byLetterUrlSlug = findByUrlSlug(urlSlug);
-
-            List<LetterDTO> data = new ArrayList<>();
-            data.add(new LetterDTO(byLetterUrlSlug.get()));
-//            byLetterUrlSlug.ifPresent(letter -> {
-//                // 편지 받을 날짜가 현재 시간보다 이전일 경우 = 이미 지나버린 경우 조회 가능하도록 변경
-//                if (letter.getReceivedDate().isBefore(LocalDateTime.now())) {
-//                    data.add(new LetterDTO(letter));
-//                }
-//            });
-
+            Optional<Letter> byLetterId = findByUrlSlug(urlSlug);
+            List<LetterDTO> data = getLetterDTO(byLetterId);
             return returnOkRequest(data);
         } catch (Exception e) {
             return returnBadRequest(e);
@@ -143,18 +135,7 @@ public class LetterService {
     public ResponseEntity<?> processReceiveLetter(String letterId) {
         try {
             Optional<Letter> byLetterId = retrieve(letterId);
-            List<LetterDTO> data = new ArrayList<>();
-            byLetterId.ifPresent(letter -> {
-                if (isOpenTime(letter)) {
-                    data.add(new LetterDTO(letter));
-                }
-                if (isNotOpenTime(letter)) {
-                    LetterDTO letterDTO = new LetterDTO(letter);
-                    letterDTO.setLetterStatus(LetterStatus.NOT_YET);
-                    data.add(letterDTO);
-                }
-            });
-
+            List<LetterDTO> data = getLetterDTO(byLetterId);
             return returnOkRequest(data);
         } catch (Exception e) {
             return returnBadRequest(e);
@@ -282,21 +263,21 @@ public class LetterService {
     /**
      * 편지를 열 수 있는 시간인지 확인
      *
-     * @param letter 편지 Entity
-     * @return 편지 시간이 열 수 있으면 false, 없으면 true
+     * @param byLetterId 편지 Entity
+     * @return 편지 시간이 열 수 있으면 true, 없으면 컨텐츠 수정 후 반환
      */
-    private boolean isNotOpenTime(Letter letter) {
-        return letter.getReceivedDate().isBefore(LocalDateTime.now());
-    }
-
-    /**
-     * 편지를 열 수 있는 시간인지 확인
-     *
-     * @param letter 편지 Entity
-     * @return 편지 시간이 열 수 있으면 true, 없으면 false
-     */
-    private boolean isOpenTime(Letter letter) {
-        return letter.getReceivedDate().isAfter(LocalDateTime.now());
+    @NotNull
+    private List<LetterDTO> getLetterDTO(Optional<Letter> byLetterId) {
+        List<LetterDTO> data = new ArrayList<>();
+        byLetterId.ifPresentOrElse(letter -> {
+            // 편지 받을 날짜가 현재 시간보다 미래일 경우 컨텐츠 안보이도록 설정
+            if (letter.getReceivedDate().isAfter(LocalDateTime.now())) {
+                letter.setContent("아직 시간이 도래하지 않았어요.");
+                letter.setLetterStatus(LetterStatus.NOT_YET);
+            }
+            data.add(new LetterDTO(letter));
+        }, () -> returnBadRequest(new Exception("찾지 못했습니다.")));
+        return data;
     }
 
     /**
