@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @CrossOrigin("*")
 @Slf4j
 @Api(tags = { "Kakao Login" }, description = "카카오 로그인")
@@ -83,7 +85,7 @@ public class OAuthController {
                         .password(member.getId())
                         .username(member.getUsername())
                         .phoneNumber(member.getPhoneNumber())
-                        .regDate(member.getRegDate())
+                        .regDate(LocalDate.now())
                         .build();
                 memberService.create(newKakaoUser);
                 log.info("kakao 회원가입 로직 완료");
