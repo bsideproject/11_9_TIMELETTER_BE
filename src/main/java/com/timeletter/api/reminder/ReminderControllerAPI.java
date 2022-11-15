@@ -59,12 +59,11 @@ public class ReminderControllerAPI {
                     .build();
 
             // letterId 와 userId를 넣어서, 중복 신청인지 확인후, 중복이라면 error
-            reminderService.isSendedValidate(letterId, userId);
 
-            Reminder returnReminder = reminderService.create(reminder);
-            reminderService.sendReminderComplated(reminder);
-            reminderService.sendReminder(reminder);
             if (reminderService.isSendedValidate(letterId, userId)) {
+                Reminder returnReminder = reminderService.create(reminder);
+                reminderService.sendReminderComplated(reminder);
+                reminderService.sendReminder(reminder);
                 return ResponseEntity.ok().body(returnReminder);
             } else {
                 ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder is duplicate").build();
