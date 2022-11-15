@@ -119,7 +119,7 @@ public class ReminderService {
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{receive_name}", reminder.getRecipientName());
         variables.put("#{send_name}", reminder.getSenderName());
-        variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+        variables.put("#{send_date}", reminder.getReceiveDate().toString());
 
         variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
