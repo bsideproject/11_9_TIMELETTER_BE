@@ -104,6 +104,8 @@ public class ReminderService {
 
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
 
+        Date date = new Date(reminder.getReceiveDate().toString());
+
         log.info("API_KEY {}", API_KEY);
         log.info("SECRET_KEY {}", SECRET_KEY);
         log.info("TEMPLATE_ID {}", TEMPLATE_ID);
@@ -115,11 +117,10 @@ public class ReminderService {
         KakaoOption kakaoOption = new KakaoOption();
         kakaoOption.setPfId(PFID);
         kakaoOption.setTemplateId(TEMPLATE_ID);
-
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{receive_name}", reminder.getRecipientName());
         variables.put("#{send_name}", reminder.getSenderName());
-        variables.put("#{send_date}", reminder.getReceiveDate().toString());
+        variables.put("#{send_date}", date.toString());
 
         variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
@@ -130,7 +131,6 @@ public class ReminderService {
         message.setKakaoOptions(kakaoOption);
 
         try {
-            Date date = new Date(reminder.getReceiveDate().toString());
 
             // Date today = new Date();
             // Date tomorrow = new Date(today.getTime() + 60 * 1000);
