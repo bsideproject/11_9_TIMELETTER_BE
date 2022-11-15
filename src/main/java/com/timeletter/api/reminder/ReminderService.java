@@ -50,11 +50,13 @@ public class ReminderService {
         return save;
     }
 
-    public void isSendedValidate(String letterId, String userId) {
+    public boolean isSendedValidate(String letterId, String userId) {
         if (reminderRepository.existsByLetterIdAndUserId(letterId, userId)) {
             log.warn("User already applied for a reminder {}", userId);
-            throw new RuntimeException("User already applied for a reminder");
+            // throw new RuntimeException("User already applied for a reminder");
+            return false;
         }
+        return true;
     }
 
     public boolean sendReminderComplated(Reminder reminder) {

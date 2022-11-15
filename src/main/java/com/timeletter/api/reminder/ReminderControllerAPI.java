@@ -64,8 +64,12 @@ public class ReminderControllerAPI {
             Reminder returnReminder = reminderService.create(reminder);
             reminderService.sendReminderComplated(reminder);
             reminderService.sendReminder(reminder);
-
-            return ResponseEntity.ok().body(returnReminder);
+            if (reminderService.isSendedValidate(letterId, userId)) {
+                return ResponseEntity.ok().body(returnReminder);
+            } else {
+                ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder is duplicate").build();
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
         } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
             return ResponseEntity.badRequest().body(responseDTO);
