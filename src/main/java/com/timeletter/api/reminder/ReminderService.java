@@ -119,9 +119,9 @@ public class ReminderService {
         // // TODO Auto-generated catch block
         // e.printStackTrace();
         // }
-        LocalDateTime dateTime = LocalDateTime.now();
+        // LocalDateTime dateTime = LocalDateTime.now();
         // log.info("get time log {}", reminder.getSendDate());
-        String parsedLocalDateTimeNow = dateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+        String parsedLocalDateTimeNow = reminder.getSendDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
 
         log.info("get time parsedLocalDateTimeNow {}", parsedLocalDateTimeNow);
         log.info("API_KEY {}", API_KEY);
