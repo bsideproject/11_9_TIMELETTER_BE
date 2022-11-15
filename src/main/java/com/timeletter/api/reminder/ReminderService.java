@@ -76,7 +76,7 @@ public class ReminderService {
         kakaoOption.setTemplateId(TEMPLATE_COMPLETED_ID);
 
         String parsedLocalDateTimeNow = reminder.getReceiveDate()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{send_name}", reminder.getSenderName());
         variables.put("#{letter_opendate}", parsedLocalDateTimeNow);
@@ -121,7 +121,7 @@ public class ReminderService {
         // }
         log.info("get time log {}", reminder.getReceiveDate());
         String parsedLocalDateTimeNow = reminder.getReceiveDate()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
 
         log.info("get time parsedLocalDateTimeNow {}", parsedLocalDateTimeNow);
         log.info("API_KEY {}", API_KEY);
