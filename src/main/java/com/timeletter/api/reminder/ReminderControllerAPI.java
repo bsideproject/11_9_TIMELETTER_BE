@@ -70,7 +70,7 @@ public class ReminderControllerAPI {
                 ReminderResponceDTO response = ReminderResponceDTO.builder().isSended(false).build();
                 // ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder is
                 // duplicate").data().build();
-                return ResponseEntity.badRequest().body(response);
+                return ResponseEntity.ok().body(response);
             }
         } else {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error("reminder create fail").build();
