@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 
 @Slf4j
@@ -119,6 +120,7 @@ public class ReminderService {
         variables.put("#{receive_name}", reminder.getRecipientName());
         variables.put("#{send_name}", reminder.getSenderName());
         variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+
         variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
 
@@ -128,8 +130,16 @@ public class ReminderService {
         message.setKakaoOptions(kakaoOption);
 
         try {
-            LocalDateTime localDateTime = LocalDateTime.parse(reminder.getReceiveDate().toString(),
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            // Date date = new Date(reminder.getReceiveDate().toString());
+
+            Date today = new Date();
+            Date tomorrow = new Date(today.getTime() + 60);
+            LocalDateTime localDateTime = tomorrow.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            // LocalDateTime localDateTime =
+            // LocalDateTime.parse(reminder.getReceiveDate().toString(),
+            // DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(localDateTime);
             Instant instant = localDateTime.toInstant(zoneOffset);
             // send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
