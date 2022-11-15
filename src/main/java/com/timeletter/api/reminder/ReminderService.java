@@ -119,11 +119,11 @@ public class ReminderService {
         // // TODO Auto-generated catch block
         // e.printStackTrace();
         // }
-        log.info("get time log", reminder.getReceiveDate());
+        log.info("get time log {}", reminder.getReceiveDate());
         String parsedLocalDateTimeNow = reminder.getReceiveDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        log.info("get time parsedLocalDateTimeNow", parsedLocalDateTimeNow);
+        log.info("get time parsedLocalDateTimeNow {}", parsedLocalDateTimeNow);
         log.info("API_KEY {}", API_KEY);
         log.info("SECRET_KEY {}", SECRET_KEY);
         log.info("TEMPLATE_ID {}", TEMPLATE_ID);
