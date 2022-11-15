@@ -75,9 +75,11 @@ public class ReminderService {
         kakaoOption.setPfId(PFID);
         kakaoOption.setTemplateId(TEMPLATE_COMPLETED_ID);
 
+        String parsedLocalDateTimeNow = reminder.getReceiveDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{send_name}", reminder.getSenderName());
-        variables.put("#{letter_opendate}", reminder.getReceiveDate().toString());
+        variables.put("#{letter_opendate}", parsedLocalDateTimeNow);
         variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
 
@@ -108,16 +110,20 @@ public class ReminderService {
 
         // Date date = new Date();
 
-        String str = reminder.getReceiveDate().toString();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        try {
-            date = format.parse(str);
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // String str = reminder.getReceiveDate().toString();
+        // SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // Date date = new Date();
+        // try {
+        // date = format.parse(str);
+        // } catch (ParseException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        log.info("get time log", reminder.getReceiveDate());
+        String parsedLocalDateTimeNow = reminder.getReceiveDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        log.info("get time parsedLocalDateTimeNow", parsedLocalDateTimeNow);
         log.info("API_KEY {}", API_KEY);
         log.info("SECRET_KEY {}", SECRET_KEY);
         log.info("TEMPLATE_ID {}", TEMPLATE_ID);
@@ -132,7 +138,7 @@ public class ReminderService {
         HashMap<String, String> variables = new HashMap<>();
         variables.put("#{receive_name}", reminder.getRecipientName());
         variables.put("#{send_name}", reminder.getSenderName());
-        variables.put("#{send_date}", date.toString());
+        variables.put("#{send_date}", parsedLocalDateTimeNow);
 
         variables.put("#{letter_url}", reminder.getUrlSlug().toString());
         kakaoOption.setVariables(variables);
@@ -146,15 +152,15 @@ public class ReminderService {
 
             // Date today = new Date();
             // Date tomorrow = new Date(today.getTime() + 60 * 1000);
-            log.info("date {}", date);
-            LocalDateTime localDateTime = date.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
+            // log.info("date {}", date);
+            // LocalDateTime localDateTime = date.toInstant()
+            // .atZone(ZoneId.systemDefault())
+            // .toLocalDateTime();
             // LocalDateTime localDateTime =
             // LocalDateTime.parse(reminder.getReceiveDate().toString(),
             // DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(localDateTime);
-            Instant instant = localDateTime.toInstant(zoneOffset);
+            ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(reminder.getReceiveDate());
+            Instant instant = reminder.getReceiveDate().toInstant(zoneOffset);
             // send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
             messageService.send(message, instant);
         } catch (NurigoMessageNotReceivedException exception) {
