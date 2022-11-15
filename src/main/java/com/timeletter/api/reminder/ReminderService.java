@@ -133,7 +133,8 @@ public class ReminderService {
             // Date date = new Date(reminder.getReceiveDate().toString());
 
             Date today = new Date();
-            Date tomorrow = new Date(today.getTime() + 60);
+            Date tomorrow = new Date(today.getTime() + 60 * 2);
+            log.info("tomorrow {}", tomorrow);
             LocalDateTime localDateTime = tomorrow.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
