@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -104,7 +106,17 @@ public class ReminderService {
 
         String[] splitNumer = reminder.getRecipientPhoneNumber().split("-");
 
-        Date date = new Date(reminder.getReceiveDate().toString());
+        // Date date = new Date();
+
+        String str = reminder.getReceiveDate().toString();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = format.parse(str);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         log.info("API_KEY {}", API_KEY);
         log.info("SECRET_KEY {}", SECRET_KEY);
