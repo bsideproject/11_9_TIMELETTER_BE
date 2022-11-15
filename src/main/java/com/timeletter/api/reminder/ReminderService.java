@@ -130,12 +130,12 @@ public class ReminderService {
         message.setKakaoOptions(kakaoOption);
 
         try {
-            // Date date = new Date(reminder.getReceiveDate().toString());
+            Date date = new Date(reminder.getReceiveDate().toString());
 
-            Date today = new Date();
-            Date tomorrow = new Date(today.getTime() + 60 * 1000);
-            log.info("tomorrow {}", tomorrow);
-            LocalDateTime localDateTime = tomorrow.toInstant()
+            // Date today = new Date();
+            // Date tomorrow = new Date(today.getTime() + 60 * 1000);
+            log.info("date {}", date);
+            LocalDateTime localDateTime = date.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             // LocalDateTime localDateTime =
