@@ -1,8 +1,6 @@
 package com.timeletter.api.letter;
 
 import com.timeletter.api.dto.ResponseDTO;
-import com.timeletter.api.statistics.LetterStatisticInterface;
-import com.timeletter.api.statistics.StatisticInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -152,7 +150,8 @@ public class LetterService {
                 }
                 if (isNotOpenTime(letter)) {
                     LetterDTO letterDTO = new LetterDTO(letter);
-                    letterDTO.setLetterStatus(LetterStatus.NOT_YET);
+                    //letterDTO.setLetterStatus(LetterStatus.NOT_YET);
+                    letterDTO.setLetterStatus(LetterStatus.DONE);
                     data.add(letterDTO);
                 }
             });
@@ -334,7 +333,6 @@ public class LetterService {
             letter.setLetterStatus(entity.getLetterStatus());
             letter.setReceivedDate(entity.getReceivedDate());
             // letter.setReceivedPhoneNumber(entity.getReceivedPhoneNumber());
-            letter.setCreatedAt(LocalDateTime.now());
             letter.setSenderName(entity.getSenderName());
             letter.setReceiverName(entity.getReceiverName());
             save(letter);
