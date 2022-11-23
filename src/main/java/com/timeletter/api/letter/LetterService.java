@@ -273,7 +273,7 @@ public class LetterService {
             // 편지 받을 날짜가 현재 시간보다 미래일 경우 컨텐츠 안보이도록 설정
             if (letter.getReceivedDate().isAfter(LocalDateTime.now())) {
                 letter.setContent("아직 시간이 도래하지 않았어요.");
-                //TODO : NOT_YET 활용하기
+                //TODO : NOT_YET 활용하기.
                 //letter.setLetterStatus(LetterStatus.NOT_YET);
                 letter.setLetterStatus(LetterStatus.DONE);
             }
