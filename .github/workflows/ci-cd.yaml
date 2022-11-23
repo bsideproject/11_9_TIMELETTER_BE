@@ -63,6 +63,7 @@ jobs:
             sudo docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
             sudo docker run --name ${{ secrets.DOCKER_IMAGE_NAME }} -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
             sudo docker rmi $(sudo docker images --filter "dangling=true" -q --no-trunc)
+            ./logs.sh
       
       - name: slack-action-success
         uses: 8398a7/action-slack@v3
