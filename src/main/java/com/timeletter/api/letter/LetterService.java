@@ -275,7 +275,7 @@ public class LetterService {
                 letter.setContent("아직 시간이 도래하지 않았어요.");
                 //TODO : NOT_YET 활용하기.
                 //letter.setLetterStatus(LetterStatus.NOT_YET);
-                letter.setLetterStatus(LetterStatus.DONE);
+                //letter.setLetterStatus(LetterStatus.DRAFT);
             }
             data.add(new LetterDTO(letter));
         }, () -> returnBadRequest(new Exception("찾지 못했습니다.")));
