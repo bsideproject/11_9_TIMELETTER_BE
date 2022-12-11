@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class LetterService {
 
     private final LetterRepository letterRepository;
-    private final ImageService imageService;
+    //private final ImageService imageService;
 
     /**
      * 임시로 편지 상태 변경하고자 만듬
@@ -58,12 +58,12 @@ public class LetterService {
     public ResponseEntity<?> processFindLetterById(String letterId) {
         try {
             Optional<Letter> byLetterId = retrieve(letterId);
-            Optional<Image> image = imageService.findByLetterId(letterId);
+            //Optional<Image> image = imageService.findByLetterId(letterId);
 
             List<LetterDTO> data = new ArrayList<>();
             byLetterId.ifPresent(letter -> {
                 LetterDTO letterDTO = new LetterDTO(letter);
-                image.ifPresent(el -> letterDTO.setImageId(el.getId()));
+                //image.ifPresent(el -> letterDTO.setImageId(el.getId()));
                 data.add(letterDTO);
             });
 
