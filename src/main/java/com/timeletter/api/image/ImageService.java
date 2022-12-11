@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -107,4 +108,8 @@ public class ImageService {
         return imageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional
+    public Optional<Image> findByLetterId(String letterId) {
+        return imageRepository.findByLetterId(letterId);
+    }
 }
