@@ -26,9 +26,16 @@ public interface LetterRepository extends JpaRepository<Letter, String> {
     )
     List<LocalDateTime> findGroupByRegDate(@Param("stDate") LocalDateTime stDate, @Param("edDate") LocalDateTime edDate);
 
+    /**
+     * 운영자 계정을 제외하고 통계 추출하기
+     *
+     * @param stDate
+     * @param edDate
+     * @return
+     */
     @Query(value = "select  l.createdAt as date " +
             "from Letter l where l.createdAt between :stDate and :edDate " +
-            "and l.userID <> 'dkyou7@naver.com' " +
+            "and l.userID <> 'dkyou7@nate.com' " +
             "and l.userID <> 'seoseo9y@gmail.com' " +
             "and l.userID <>'ringo.leedk@gmail.com' " +
             "and l.userID <> 'bing1456@naver.com' " +
