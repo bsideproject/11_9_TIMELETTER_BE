@@ -440,6 +440,26 @@ public class LetterService {
         }
         return result;
     }
+    public List<String> letterCountGroupByDate2(String stDate, String edDate) {
+        LocalDateTime startDate = stDate.isEmpty() ? LocalDateTime.now().minusWeeks(1) : strToLocalDateTime(stDate,LocalTime.MIN);
+        LocalDateTime endDate = edDate.isEmpty() ? LocalDateTime.now() : strToLocalDateTime(edDate,LocalTime.MAX);
+
+        log.info("조회 시작 일 : " + startDate);
+        log.info("조회 종료 일 : " + endDate);
+
+        List<LocalDateTime> groupByRegDate2 = letterRepository.findGroupByRegDate2(startDate, endDate);
+        Map<String, Long> groupByRegDate = this.letterRepository
+                .findGroupByRegDate2(startDate, endDate)
+                .stream().map(LocalDateTime::toLocalDate)
+                .collect(Collectors.groupingBy(LocalDate::toString, Collectors.counting()));
+
+        List<String> result = new ArrayList<>();
+
+        for (LocalDate i = startDate.toLocalDate(); i.isBefore(endDate.toLocalDate()) || i.isEqual(endDate.toLocalDate()); i = i.plusDays(1)) {
+            result.add("일자 : " + i + ", 편지 발송 수 : "+groupByRegDate.getOrDefault(i.toString(),Long.parseLong("0")));
+        }
+        return result;
+    }
 
     private LocalDateTime strToLocalDateTime(String date, LocalTime option) {
         return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE).atTime(option);

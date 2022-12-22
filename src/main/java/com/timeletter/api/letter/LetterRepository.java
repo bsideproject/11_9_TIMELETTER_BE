@@ -25,4 +25,14 @@ public interface LetterRepository extends JpaRepository<Letter, String> {
             "from Letter l where l.createdAt between :stDate and :edDate"
     )
     List<LocalDateTime> findGroupByRegDate(@Param("stDate") LocalDateTime stDate, @Param("edDate") LocalDateTime edDate);
+
+    @Query(value = "select  l.createdAt as date " +
+            "from Letter l where l.createdAt between :stDate and :edDate " +
+            "and l.userID <> 'dkyou7@naver.com' " +
+            "and l.userID <> 'seoseo9y@gmail.com' " +
+            "and l.userID <>'ringo.leedk@gmail.com' " +
+            "and l.userID <> 'bing1456@naver.com' " +
+            "and l.userID <>'ag0005000@naver.com' "
+    )
+    List<LocalDateTime> findGroupByRegDate2(@Param("stDate") LocalDateTime stDate, @Param("edDate") LocalDateTime edDate);
 }

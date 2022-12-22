@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -34,6 +32,17 @@ public class StatisticsController {
     public ResponseEntity<?> letterCountGroupByDate(@RequestParam("stDate") String stDate, @RequestParam("edDate") String edDate) {
         try {
             List<String> statisticInterfaces = letterService.letterCountGroupByDate(stDate, edDate);
+            return ResponseEntity.ok().body(statisticInterfaces);
+        } catch (Exception e) {
+            ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    @GetMapping("/letterCount2")
+    public ResponseEntity<?> letterCountGroupByDate2(@RequestParam("stDate") String stDate, @RequestParam("edDate") String edDate) {
+        try {
+            List<String> statisticInterfaces = letterService.letterCountGroupByDate2(stDate, edDate);
             return ResponseEntity.ok().body(statisticInterfaces);
         } catch (Exception e) {
             ResponseDTO<Object> responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
